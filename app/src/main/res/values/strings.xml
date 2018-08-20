@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Package Tracker</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Package Tracker</string>
+
+    <string-array name="vendors">
+        <item>USPS</item>
+    </string-array>
 
 </resources>
