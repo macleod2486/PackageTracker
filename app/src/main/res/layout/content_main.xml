@@ -5,15 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.macleod2486.packagetracker.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.macleod2486.packagetracker.MainActivity">
 
         <Spinner
+            android:id="@+id/vendorsDropdown"
             android:layout_width="150dp"
             android:layout_height="80dp"
-            android:visibility="visible"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="47dp"
             android:textSize="14sp"
-            android:id="@+id/vendorsDropdown">
-        </Spinner>
+            android:visibility="visible"></Spinner>
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="22dp"
+            android:text="Add">
+
+        </Button>
 
 </RelativeLayout>

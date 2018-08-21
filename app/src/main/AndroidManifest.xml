@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="opencv.macleod2486.com.packagetracker">
+    package="com.macleod2486.packagetracker">
 
     <application
         android:allowBackup="true"

@@ -19,22 +19,52 @@
  *    along with this program.  If not, see [http://www.gnu.org/licenses/].
  *
  */
-
 package com.macleod2486.packagetracker.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.macleod2486.packagetracker.R;
 
-public class USPS extends Fragment
+public class Main extends Fragment
 {
+    View main;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_usps, container, false);
+        main = inflater.inflate(R.layout.content_main, container, false);
+
+        final Spinner vendorsDropdown = (Spinner) main.findViewById(R.id.vendorsDropdown);
+
+        ArrayList<String> listOfVendors = new ArrayList<String>();
+        listOfVendors.add(0, "Select one");
+        listOfVendors.addAll(Arrays.asList(getResources().getStringArray(R.array.vendors)));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line, listOfVendors);
+
+        vendorsDropdown.setAdapter(adapter);
+
+        Button add = (Button)main.findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Log.i("MainActivity","Selected "+vendorsDropdown.getSelectedItem().toString());
+            }
+        });
+
+        return main;
     }
+
 }

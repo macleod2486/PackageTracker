@@ -23,34 +23,30 @@
 package com.macleod2486.packagetracker;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.macleod2486.packagetracker.fragments.Main;
 
-import opencv.macleod2486.com.packagetracker.R;
+import com.macleod2486.packagetracker.R;
 
 public class MainActivity extends AppCompatActivity
 {
+    FragmentManager manager;
+    Fragment Main;
+    Fragment USPS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        Spinner vendorsDropdown = (Spinner) findViewById(R.id.vendorsDropdown);
+        manager = getSupportFragmentManager();
+        USPS = new Main();
 
-        ArrayList<String> listOfVendors = new ArrayList<String>();
-        listOfVendors.add(0, "Select one");
-        listOfVendors.addAll(Arrays.asList(getResources().getStringArray(R.array.vendors)));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, listOfVendors);
-
-        vendorsDropdown.setAdapter(adapter);
+        manager.beginTransaction().replace(R.id.main, USPS, "Main").commit();
     }
 }
