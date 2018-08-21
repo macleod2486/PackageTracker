@@ -26,9 +26,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.macleod2486.packagetracker.fragments.Main;
+import com.macleod2486.packagetracker.fragments.USPS;
 
 import com.macleod2486.packagetracker.R;
 
@@ -45,8 +45,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         manager = getSupportFragmentManager();
-        USPS = new Main();
+        Main = new Main();
+        USPS = new USPS();
 
-        manager.beginTransaction().replace(R.id.main, USPS, "Main").commit();
+        manager.beginTransaction().replace(R.id.main, Main, "Main").commit();
     }
 }

@@ -29,4 +29,18 @@
 
         </Button>
 
+        <ScrollView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="478dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+        </ScrollView>
+
 </RelativeLayout>
