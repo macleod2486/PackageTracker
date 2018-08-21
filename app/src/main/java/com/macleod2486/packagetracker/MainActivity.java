@@ -30,8 +30,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.macleod2486.packagetracker.fragments.Main;
 import com.macleod2486.packagetracker.fragments.USPS;
 
-import com.macleod2486.packagetracker.R;
-
 public class MainActivity extends AppCompatActivity
 {
     FragmentManager manager;

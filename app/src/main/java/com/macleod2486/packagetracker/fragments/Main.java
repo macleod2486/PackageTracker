@@ -48,7 +48,6 @@ public class Main extends Fragment
         final Spinner vendorsDropdown = (Spinner) main.findViewById(R.id.vendorsDropdown);
 
         ArrayList<String> listOfVendors = new ArrayList<String>();
-        listOfVendors.add(0, "Select one");
         listOfVendors.addAll(Arrays.asList(getResources().getStringArray(R.array.vendors)));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line, listOfVendors);

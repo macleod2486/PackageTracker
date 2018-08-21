@@ -3,10 +3,10 @@
     <string name="title_activity_main">Package Tracker</string>
 
     <string-array name="vendors">
+        <item>Select one</item>
         <item>USPS</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addButtonText">Add</string>
 
 </resources>
