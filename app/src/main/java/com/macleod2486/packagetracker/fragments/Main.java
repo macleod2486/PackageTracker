@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -60,6 +61,20 @@ public class Main extends Fragment
             public void onClick(View view)
             {
                 Log.i("MainActivity","Selected "+vendorsDropdown.getSelectedItem().toString());
+            }
+        });
+
+        ArrayList<String> statuses = new ArrayList<String>();
+        statuses.add("No current entries");
+
+        ListView statusList = main.findViewById(R.id.status);
+        statusList.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, statuses)
+        {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
+                View view = super.getView(position, convertView, parent);
+                return view;
             }
         });
 
