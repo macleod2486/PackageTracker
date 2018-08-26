@@ -9,4 +9,6 @@
 
     <string name="addButtonText">Add</string>
 
+    <string name="USPSAPI">http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&amp;XML=</string>
+
 </resources>

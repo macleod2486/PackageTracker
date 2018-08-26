@@ -23,6 +23,7 @@ package com.macleod2486.packagetracker.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +61,21 @@ public class Main extends Fragment
         {
             public void onClick(View view)
             {
-                Log.i("MainActivity","Selected "+vendorsDropdown.getSelectedItem().toString());
+                String selection = vendorsDropdown.getSelectedItem().toString();
+
+                Log.i("MainActivity","Selected "+selection);
+
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+
+                switch(selection)
+                {
+                    case "USPS":
+                    {
+                        Fragment USPS = new USPS();
+                        manager.beginTransaction().replace(R.id.main, USPS, "USPS").commit();
+                    }
+                }
+
             }
         });
 

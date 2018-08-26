@@ -24,6 +24,7 @@ package com.macleod2486.packagetracker.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +33,16 @@ import com.macleod2486.packagetracker.R;
 
 public class USPS extends Fragment
 {
+    String api;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_usps, container, false);
+        View uspsView = inflater.inflate(R.layout.fragment_usps, container, false);
+        api = uspsView.getResources().getString(R.string.USPSAPI);
+
+        Log.i("USPS","Api "+api);
+
+        return uspsView;
     }
 }

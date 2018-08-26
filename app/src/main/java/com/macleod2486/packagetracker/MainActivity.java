@@ -28,13 +28,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.macleod2486.packagetracker.fragments.Main;
-import com.macleod2486.packagetracker.fragments.USPS;
 
 public class MainActivity extends AppCompatActivity
 {
     FragmentManager manager;
     Fragment Main;
-    Fragment USPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,7 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         manager = getSupportFragmentManager();
         Main = new Main();
-        USPS = new USPS();
 
         manager.beginTransaction().replace(R.id.main, Main, "Main").commit();
     }
