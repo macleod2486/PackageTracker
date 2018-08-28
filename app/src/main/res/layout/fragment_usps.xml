@@ -1,7 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.macleod2486.packagetracker.fragments.USPS">
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:id="@+id/addUSPS"
+        android:text="Add"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addUSPS"
+        android:inputType="textMultiLine"
+        android:hint="@string/USPSHint"
+        android:maxLines="10"
+        android:singleLine="false"
+        android:scrollbars="none"
+        android:id="@+id/trackingEntry"/>
 
 </RelativeLayout>
