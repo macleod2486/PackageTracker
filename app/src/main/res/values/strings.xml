@@ -9,7 +9,9 @@
 
     <string name="addButtonText">Add</string>
 
-    <string name="USPSAPI">http://production.shippingapis.com/ShippingAPI.dll?API=TrackV2&amp;XML=</string>
+    <string name="USPSAPI">http://production.shippingapis.com/ShippingAPI.dll</string>
+    <string name="USPSApiUserID">Your Username</string>
+
     <string name="USPSHint">Enter tracking number(s)</string>
 
 </resources>
