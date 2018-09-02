@@ -58,8 +58,8 @@ public class USPSApi
         String result = "";
 
         this.APIUrl = Uri.parse(this.APIUrl).buildUpon()
-                .appendQueryParameter("XML",xml)
                 .appendQueryParameter("API","TrackV2")
+                .appendQueryParameter("XML",xml)
                 .build().toString();
 
         Log.i("USPSApi",this.APIUrl);
