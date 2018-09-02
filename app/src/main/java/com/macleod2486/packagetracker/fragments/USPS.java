@@ -24,22 +24,53 @@ package com.macleod2486.packagetracker.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.macleod2486.packagetracker.R;
+import com.macleod2486.packagetracker.tools.USPSApi;
 
 public class USPS extends Fragment
 {
     String api;
+    Button addUSPSTracking;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View uspsView = inflater.inflate(R.layout.fragment_usps, container, false);
+        final View uspsView = inflater.inflate(R.layout.fragment_usps, container, false);
         api = uspsView.getResources().getString(R.string.USPSAPI);
+
+        final EditText text = uspsView.findViewById(R.id.trackingEntry);
+
+        addUSPSTracking = uspsView.findViewById(R.id.addUSPS);
+        addUSPSTracking.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final Main main = new Main();
+                final FragmentManager manager = getActivity().getSupportFragmentManager();
+
+                String userId = uspsView.getResources().getString(R.string.USPSApiUserID);
+                final String trackingIDs = text.getText().toString();
+                final USPSApi apiTool = new USPSApi(userId, api);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String result = apiTool.getTrackingInfo(trackingIDs);
+                        Log.i("USPS","Result: "+result);
+                        manager.beginTransaction().replace(R.id.main, main, "Main").commit();
+                    }
+                }).start();
+            }
+        });
 
         Log.i("USPS","Api "+api);
 
