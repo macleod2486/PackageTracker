@@ -22,7 +22,9 @@
 
 package com.macleod2486.packagetracker.tools;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -53,5 +55,60 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
         Log.i("PackageDatabaseManager","Upgrade called");
+    }
+
+    public void addEntry(String trackingNumber, String service, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
+    {
+        Cursor cursor;
+        cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
+        cursor.moveToFirst();
+
+        int id = cursor.getInt(0) + 1;
+        ContentValues insert = new ContentValues();
+        insert.put("id", id);
+        insert.put("trackingnumber", trackingNumber);
+        insert.put("service", service);
+
+        db.insert("TrackingNumbers",null,insert);
+        cursor.close();
+
+        addHistory(id, date, time, historyInfo, city, state, zipcode, country);
+    }
+
+    public void addHistory(int trackingNumberId, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
+    {
+        Cursor cursor;
+        cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
+        cursor.moveToFirst();
+
+        int id = cursor.getInt(0) + 1;
+        ContentValues insert = new ContentValues();
+        insert.put("id",id);
+        insert.put("trackingnumberid", trackingNumberId);
+        insert.put("date", date);
+        insert.put("historyinfo", historyInfo);
+        insert.put("date", date);
+        insert.put("city", city);
+        insert.put("state", state);
+        insert.put("zipcode", zipcode);
+        insert.put("country", country);
+
+        db.insert("TrackingNumbers",null,insert);
+        cursor.close();
+    }
+
+    public void deleteEntryAndHistory()
+    {
+
+    }
+
+    public void getEntries()
+    {
+
+    }
+
+    public void getHistory()
+    {
+
     }
 }
