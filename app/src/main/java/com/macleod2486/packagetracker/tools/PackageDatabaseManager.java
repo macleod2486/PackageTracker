@@ -48,7 +48,7 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         Log.i("PackageDatabaseManager","On create called");
 
         db.execSQL("Create table if not exists TrackingNumbers (id int not null, trackingnumber string(80), service string(30), primary key(id))");
-        db.execSQL("Create table if not exists History (id int not null, trackingnumberid string(80), historyInfo string(500), date string(200), time string(30), city string(50), state string(2), string zipcode(5), string country(2), seen int(2), primary key(id))");
+        db.execSQL("Create table if not exists History (id int not null, trackingnumberid string(80), historyInfo string(500), date string(200), time string(30), city string(50), state string(2), zipcode string(5), country string(2), seen int(2), primary key(id))");
     }
 
     @Override
