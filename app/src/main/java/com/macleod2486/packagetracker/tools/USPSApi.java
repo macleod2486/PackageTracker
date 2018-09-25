@@ -22,23 +22,30 @@
 
 package com.macleod2486.packagetracker.tools;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import org.w3c.dom.Document;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class USPSApi
 {
     String userID;
     String APIUrl;
 
-    public USPSApi(String userID, String APIUrl)
+    PackageDatabaseManager manager;
+
+    public USPSApi(String userID, String APIUrl, Context context)
     {
         this.userID = userID;
         this.APIUrl = APIUrl;
+        this.manager = new PackageDatabaseManager(context,"PackageManager",null, 1);
     }
 
     public String getTrackingInfo(String trackingIDs)
@@ -73,23 +80,39 @@ public class USPSApi
             connection.setRequestMethod("GET");
             connection.setDoOutput(true);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            String line = reader.readLine();
-            while(line != null)
-            {
-                Log.i("USPSApi",line.toString());
-                line = reader.readLine();
-            }
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(connection.getInputStream());
 
             connection.disconnect();
+
+            storeResult(doc);
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Log.i("USPSAPIError",e.getMessage());
             result = "Error";
         }
 
         return result;
+    }
+
+    public boolean storeResult(Document doc)
+    {
+        boolean completed;
+
+        try
+        {
+            Log.i("USPSApi", doc.getFirstChild().getNodeName());
+
+            completed = true;
+        }
+        catch(Exception e)
+        {
+            Log.i("USPSApiError",e.getMessage());
+            completed = false;
+        }
+
+        return completed;
     }
 }

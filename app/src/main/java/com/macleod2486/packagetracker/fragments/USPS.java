@@ -56,16 +56,16 @@ public class USPS extends Fragment
             {
                 final Main main = new Main();
                 final FragmentManager manager = getActivity().getSupportFragmentManager();
-
                 String userId = uspsView.getResources().getString(R.string.USPSApiUserID);
                 final String trackingIDs = text.getText().toString();
-                final USPSApi apiTool = new USPSApi(userId, api);
+                final USPSApi apiTool = new USPSApi(userId, api, getContext());
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         String result = apiTool.getTrackingInfo(trackingIDs);
                         Log.i("USPS","Result: "+result);
+
                         manager.beginTransaction().replace(R.id.main, main, "Main").commit();
                     }
                 }).start();
