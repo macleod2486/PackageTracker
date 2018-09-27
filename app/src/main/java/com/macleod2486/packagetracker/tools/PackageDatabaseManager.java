@@ -29,6 +29,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class PackageDatabaseManager extends SQLiteOpenHelper
 {
     private SQLiteDatabase db;
@@ -93,8 +95,13 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         insert.put("zipcode", zipcode);
         insert.put("country", country);
 
-        db.insert("TrackingNumbers",null,insert);
+        db.insert("History",null,insert);
         cursor.close();
+    }
+
+    public void updateEntry()
+    {
+
     }
 
     public void deleteEntryAndHistory()
@@ -102,9 +109,23 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
 
     }
 
-    public void getEntries()
+    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, boolean notReachedend)
     {
+        if(cursor == null)
+        {
+            cursor = db.rawQuery("select trackingnumber from TrackingNumbers",null);
+            cursor.moveToFirst();
+        }
+        if(entries == null) entries = new ArrayList<String>();
 
+        if(cursor.getCount() > 0 && notReachedend)
+        {
+            entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
+            notReachedend = cursor.moveToNext();
+            getEntries(cursor, entries, notReachedend);
+        }
+
+        return entries;
     }
 
     public void getHistory()

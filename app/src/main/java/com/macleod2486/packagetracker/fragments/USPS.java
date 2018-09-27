@@ -72,8 +72,6 @@ public class USPS extends Fragment
             }
         });
 
-        Log.i("USPS","Api "+api);
-
         return uspsView;
     }
 }

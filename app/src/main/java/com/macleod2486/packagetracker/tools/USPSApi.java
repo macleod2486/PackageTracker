@@ -27,9 +27,11 @@ import android.net.Uri;
 import android.util.Log;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,6 +40,7 @@ public class USPSApi
 {
     String userID;
     String APIUrl;
+    String[] listOfIds;
 
     PackageDatabaseManager manager;
 
@@ -53,7 +56,7 @@ public class USPSApi
         //Generate request
         String xml = "<TrackFieldRequest USERID=\""+userID+"\">";
 
-        String[] listOfIds = trackingIDs.split(",");
+        listOfIds = trackingIDs.split(",");
 
         for (String id: listOfIds)
         {
@@ -86,7 +89,7 @@ public class USPSApi
 
             connection.disconnect();
 
-            storeResult(doc);
+            storeInitial(doc);
         }
         catch (Exception e)
         {
@@ -97,22 +100,65 @@ public class USPSApi
         return result;
     }
 
-    public boolean storeResult(Document doc)
+    public boolean storeInitial(Document doc)
     {
         boolean completed;
 
         try
         {
-            Log.i("USPSApi", doc.getFirstChild().getNodeName());
+            //0 - Event Time
+            //1 - Event Date
+            //2 - Event description
+            //3 - Event City
+            //4 - Event State
+            //5 - Event Zipcode
+            //6 - Event Country
+
+            String trackingNumber;
+            String time;
+            String date;
+            String description;
+            String city;
+            String state;
+            String zipcode;
+            String country;
+
+            //Summary (Roughly the most recent part of the tracking)
+            NodeList summary = doc.getElementsByTagName("TrackSummary");
+            NodeList summaryNodes;
+            ArrayList<String> entries = manager.getEntries(null, null, true);
+
+            for(int index = 0; index < summary.getLength(); index++)
+            {
+                summaryNodes = summary.item(index).getChildNodes();
+
+                trackingNumber = listOfIds[index];
+                if(entries.contains(trackingNumber)) continue;
+                time = summaryNodes.item(0).getTextContent();
+                date = summaryNodes.item(1).getTextContent();
+                description = summaryNodes.item(2).getTextContent();
+                city = summaryNodes.item(3).getTextContent();
+                state = summaryNodes.item(4).getTextContent();
+                zipcode = summaryNodes.item(5).getTextContent();
+                country = summaryNodes.item(6).getTextContent();
+
+                manager.addEntry(trackingNumber,"USPS", date, time, description, city, state, zipcode, country);
+            }
 
             completed = true;
         }
         catch(Exception e)
         {
-            Log.i("USPSApiError",e.getMessage());
+            e.printStackTrace();
+            Log.e("USPSApiError",e.getMessage());
             completed = false;
         }
 
         return completed;
+    }
+
+    public void updateHistory()
+    {
+
     }
 }
