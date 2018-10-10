@@ -109,7 +109,7 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
 
     }
 
-    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, boolean notReachedend)
+    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, boolean hasReachedEnd)
     {
         if(cursor == null)
         {
@@ -118,18 +118,47 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         }
         if(entries == null) entries = new ArrayList<String>();
 
-        if(cursor.getCount() > 0 && notReachedend)
+        if(cursor.getCount() > 0 && hasReachedEnd)
         {
             entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
-            notReachedend = cursor.moveToNext();
-            getEntries(cursor, entries, notReachedend);
+            hasReachedEnd = cursor.moveToNext();
+            getEntries(cursor, entries, hasReachedEnd);
         }
 
         return entries;
     }
 
-    public void getHistory()
+    public String getTrackingId(String trackingNumber)
     {
+        Cursor cursor = db.rawQuery("select * from TrackingNumbers where trackingnumber = '"+trackingNumber+"'", null);
+        String trackingid = cursor.getString(cursor.getColumnIndex("id"));
 
+        return trackingid;
+    }
+
+    public ArrayList<String> getHistory(Cursor cursor, String trackingId, ArrayList<String> history, boolean hasReachedEnd)
+    {
+        if(cursor == null)
+        {
+            cursor = db.rawQuery("select * from History where trackingnumberid = '"+trackingId+"'",null);
+            cursor.moveToFirst();
+        }
+
+        if(history == null) history = new ArrayList<String>();
+
+        if(cursor.getCount() > 0 && hasReachedEnd)
+        {
+            String date = cursor.getString(cursor.getColumnIndex("date"));
+            String city = cursor.getString(cursor.getColumnIndex("city"));
+            String state = cursor.getString(cursor.getColumnIndex("state"));
+            String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
+            String country = cursor.getString(cursor.getColumnIndex("country"));
+
+            history.add(date+","+city+","+state+","+zipcode+","+country);
+            hasReachedEnd = cursor.moveToNext();
+            getHistory(cursor, trackingId, history, hasReachedEnd);
+        }
+
+        return history;
     }
 }
