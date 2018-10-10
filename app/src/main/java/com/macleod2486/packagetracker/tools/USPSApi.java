@@ -157,8 +157,16 @@ public class USPSApi
         return completed;
     }
 
-    public void updateHistory()
+    public void updateHistory(String trackingNumber)
     {
 
+    }
+
+    public ArrayList<String> getHistory(String trackingNumber)
+    {
+        String trackingId = manager.getTrackingId(trackingNumber);
+        ArrayList<String> fullHistory = manager.getHistory(null, trackingId, null, false);
+
+        return fullHistory;
     }
 }
