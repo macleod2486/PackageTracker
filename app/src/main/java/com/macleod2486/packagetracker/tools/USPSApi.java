@@ -100,7 +100,7 @@ public class USPSApi
         return result;
     }
 
-    public boolean storeInitial(Document doc)
+    private boolean storeInitial(Document doc)
     {
         boolean completed;
 
