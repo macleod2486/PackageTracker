@@ -99,11 +99,6 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         cursor.close();
     }
 
-    public void updateEntry()
-    {
-
-    }
-
     public void deleteEntryAndHistory()
     {
 

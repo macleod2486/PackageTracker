@@ -51,8 +51,10 @@ public class USPSApi
         this.manager = new PackageDatabaseManager(context,"PackageManager",null, 1);
     }
 
-    public String getTrackingInfo(String trackingIDs)
+    public Document getTrackingInfo(String trackingIDs)
     {
+        Document doc = null;
+
         //Generate request
         String xml = "<TrackFieldRequest USERID=\""+userID+"\">";
 
@@ -64,8 +66,6 @@ public class USPSApi
         }
 
         xml += "</TrackFieldRequest>";
-
-        String result = "";
 
         this.APIUrl = Uri.parse(this.APIUrl).buildUpon()
                 .appendQueryParameter("API","TrackV2")
@@ -85,7 +85,7 @@ public class USPSApi
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(connection.getInputStream());
+            doc = builder.parse(connection.getInputStream());
 
             connection.disconnect();
 
@@ -94,13 +94,12 @@ public class USPSApi
         catch (Exception e)
         {
             Log.i("USPSAPIError",e.getMessage());
-            result = "Error";
         }
 
-        return result;
+        return doc;
     }
 
-    private boolean storeInitial(Document doc)
+    public boolean storeInitial(Document doc)
     {
         boolean completed;
 
@@ -159,6 +158,58 @@ public class USPSApi
 
     public void updateHistory(String trackingNumber)
     {
+
+        //Reuse get tracking info for doc.
+
+        String trackingId = manager.getTrackingId(trackingNumber);
+        ArrayList<String> currentHistory  = manager.getHistory(null, trackingId, null, false);
+        Document result = getTrackingInfo(trackingNumber);
+
+        try
+        {
+            //0 - Event Time
+            //1 - Event Date
+            //2 - Event description
+            //3 - Event City
+            //4 - Event State
+            //5 - Event Zipcode
+            //6 - Event Country
+
+            String time;
+            String date;
+            String description;
+            String city;
+            String state;
+            String zipcode;
+            String country;
+
+            //Summary (Roughly the most recent part of the tracking)
+            NodeList summary = result.getElementsByTagName("TrackSummary");
+            NodeList summaryNodes;
+            ArrayList<String> entries = manager.getEntries(null, null, true);
+
+            for(int index = 0; index < summary.getLength(); index++)
+            {
+                summaryNodes = summary.item(index).getChildNodes();
+
+                trackingNumber = listOfIds[index];
+                if(entries.contains(trackingNumber)) continue;
+                time = summaryNodes.item(0).getTextContent();
+                date = summaryNodes.item(1).getTextContent();
+                description = summaryNodes.item(2).getTextContent();
+                city = summaryNodes.item(3).getTextContent();
+                state = summaryNodes.item(4).getTextContent();
+                zipcode = summaryNodes.item(5).getTextContent();
+                country = summaryNodes.item(6).getTextContent();
+
+                //Check and update history
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            Log.e("USPSAPI",e.getMessage());
+        }
 
     }
 

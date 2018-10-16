@@ -35,6 +35,8 @@ import android.widget.EditText;
 import com.macleod2486.packagetracker.R;
 import com.macleod2486.packagetracker.tools.USPSApi;
 
+import org.w3c.dom.Document;
+
 public class USPS extends Fragment
 {
     String api;
@@ -63,7 +65,8 @@ public class USPS extends Fragment
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String result = apiTool.getTrackingInfo(trackingIDs);
+                        Document result = apiTool.getTrackingInfo(trackingIDs);
+                        apiTool.storeInitial(result);
                         Log.i("USPS","Result: "+result);
 
                         manager.beginTransaction().replace(R.id.main, main, "Main").commit();
