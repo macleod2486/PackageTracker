@@ -144,12 +144,13 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         if(cursor.getCount() > 0 && hasReachedEnd)
         {
             String date = cursor.getString(cursor.getColumnIndex("date"));
+            String historyinfo = cursor.getString(cursor.getColumnIndex("historyinfo"));
             String city = cursor.getString(cursor.getColumnIndex("city"));
             String state = cursor.getString(cursor.getColumnIndex("state"));
             String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
             String country = cursor.getString(cursor.getColumnIndex("country"));
 
-            history.add(date+","+city+","+state+","+zipcode+","+country);
+            history.add(date+","+historyinfo+","+city+","+state+","+zipcode+","+country);
             hasReachedEnd = cursor.moveToNext();
             getHistory(cursor, trackingId, history, hasReachedEnd);
         }
