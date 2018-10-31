@@ -209,7 +209,7 @@ public class USPSApi
                 completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
 
                 if(!completeHistory.contains(completeEntry))
-                    manager.addEntry(trackingNumber,"USPS",date,time,description,city,state,zipcode,country);
+                    manager.addHistory(Integer.parseInt(trackingId), date, time, description, city, state, zipcode, country);
 
             }
         }
