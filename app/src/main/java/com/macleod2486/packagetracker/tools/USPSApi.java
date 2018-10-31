@@ -188,6 +188,10 @@ public class USPSApi
             NodeList summaryNodes;
             ArrayList<String> entries = manager.getEntries(null, null, true);
 
+            //Check and update history
+            ArrayList<String> completeHistory = getHistory(trackingNumber);
+            String completeEntry = "";
+
             for(int index = 0; index < summary.getLength(); index++)
             {
                 summaryNodes = summary.item(index).getChildNodes();
@@ -202,7 +206,11 @@ public class USPSApi
                 zipcode = summaryNodes.item(5).getTextContent();
                 country = summaryNodes.item(6).getTextContent();
 
-                //Check and update history
+                completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
+
+                if(!completeHistory.contains(completeEntry))
+                    manager.addEntry(trackingNumber,"USPS",date,time,description,city,state,zipcode,country);
+
             }
         }
         catch(Exception e)
