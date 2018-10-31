@@ -89,7 +89,7 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         insert.put("trackingnumberid", trackingNumberId);
         insert.put("date", date);
         insert.put("historyinfo", historyInfo);
-        insert.put("date", date);
+        insert.put("time", time);
         insert.put("city", city);
         insert.put("state", state);
         insert.put("zipcode", zipcode);
@@ -144,13 +144,14 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         if(cursor.getCount() > 0 && hasReachedEnd)
         {
             String date = cursor.getString(cursor.getColumnIndex("date"));
+            String time = cursor.getString(cursor.getColumnIndex("time"));
             String historyinfo = cursor.getString(cursor.getColumnIndex("historyinfo"));
             String city = cursor.getString(cursor.getColumnIndex("city"));
             String state = cursor.getString(cursor.getColumnIndex("state"));
             String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
             String country = cursor.getString(cursor.getColumnIndex("country"));
 
-            history.add(date+","+historyinfo+","+city+","+state+","+zipcode+","+country);
+            history.add(date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
             hasReachedEnd = cursor.moveToNext();
             getHistory(cursor, trackingId, history, hasReachedEnd);
         }
