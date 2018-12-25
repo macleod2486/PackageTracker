@@ -104,11 +104,11 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
 
     }
 
-    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, boolean hasReachedEnd)
+    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, String service, boolean hasReachedEnd)
     {
         if(cursor == null)
         {
-            cursor = db.rawQuery("select trackingnumber from TrackingNumbers",null);
+            cursor = db.rawQuery("select trackingnumber from TrackingNumbers where service = '"+service+"'",null);
             cursor.moveToFirst();
         }
         if(entries == null) entries = new ArrayList<String>();
@@ -117,7 +117,7 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         {
             entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
             hasReachedEnd = cursor.moveToNext();
-            getEntries(cursor, entries, hasReachedEnd);
+            getEntries(cursor, entries, service, hasReachedEnd);
         }
 
         return entries;

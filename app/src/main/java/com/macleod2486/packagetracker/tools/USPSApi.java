@@ -125,7 +125,7 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = doc.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries(null, null, true);
+            ArrayList<String> entries = manager.getEntries(null, null, "USPS",true);
 
             for(int index = 0; index < summary.getLength(); index++)
             {
@@ -162,7 +162,6 @@ public class USPSApi
         //Reuse get tracking info for doc.
 
         String trackingId = manager.getTrackingId(trackingNumber);
-        ArrayList<String> currentHistory  = manager.getHistory(null, trackingId, null, false);
         Document result = getTrackingInfo(trackingNumber);
 
         try
@@ -186,7 +185,7 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = result.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries(null, null, true);
+            ArrayList<String> entries = manager.getEntries(null, null,"USPS", true);
 
             //Check and update history
             ArrayList<String> completeHistory = getHistory(trackingNumber);
@@ -224,8 +223,11 @@ public class USPSApi
     public ArrayList<String> getHistory(String trackingNumber)
     {
         String trackingId = manager.getTrackingId(trackingNumber);
-        ArrayList<String> fullHistory = manager.getHistory(null, trackingId, null, false);
+        return manager.getHistory(null, trackingId, null, false);
+    }
 
-        return fullHistory;
+    public ArrayList<String> getTrackingNumbers()
+    {
+        return manager.getEntries(null, null, "USPS", true);
     }
 }

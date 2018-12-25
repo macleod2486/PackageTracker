@@ -27,6 +27,8 @@ import android.support.v4.app.JobIntentService;
 
 import com.macleod2486.packagetracker.R;
 
+import java.util.ArrayList;
+
 public class TrackingUpdater extends JobIntentService
 {
     @Override
@@ -36,8 +38,12 @@ public class TrackingUpdater extends JobIntentService
         String api = getApplicationContext().getResources().getString(R.string.USPSAPI);;
         USPSApi apiTool = new USPSApi(userId, api, getApplicationContext());
 
+        ArrayList<String> trackingNumbers = apiTool.getTrackingNumbers();
 
-        //Update the entries once completed.
+        for(String trackingNumber: trackingNumbers)
+        {
+            apiTool.updateHistory(trackingNumber);
+        }
 
     }
 }
