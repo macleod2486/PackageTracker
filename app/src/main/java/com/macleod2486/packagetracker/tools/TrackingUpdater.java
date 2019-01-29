@@ -22,17 +22,26 @@
 
 package com.macleod2486.packagetracker.tools;
 
-import android.content.Intent;
-import android.support.v4.app.JobIntentService;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
 
 import com.macleod2486.packagetracker.R;
 
 import java.util.ArrayList;
 
-public class TrackingUpdater extends JobIntentService
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
+public class TrackingUpdater extends Worker
 {
+    public TrackingUpdater(@NonNull Context context, @NonNull WorkerParameters params)
+    {
+        super(context, params);
+    }
+
     @Override
-    protected void onHandleWork(Intent intent)
+    public Result doWork()
     {
         String userId = getApplicationContext().getResources().getString(R.string.USPSApiUserID);
         String api = getApplicationContext().getResources().getString(R.string.USPSAPI);;
@@ -45,5 +54,6 @@ public class TrackingUpdater extends JobIntentService
             apiTool.updateHistory(trackingNumber);
         }
 
+        return Result.success();
     }
 }
