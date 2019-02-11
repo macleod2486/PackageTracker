@@ -23,6 +23,7 @@
 package com.macleod2486.packagetracker.tools;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -43,6 +44,8 @@ public class TrackingUpdater extends Worker
     @Override
     public Result doWork()
     {
+        Log.i("TrackingUpdater","Doing work");
+
         String userId = getApplicationContext().getResources().getString(R.string.USPSApiUserID);
         String api = getApplicationContext().getResources().getString(R.string.USPSAPI);;
         USPSApi apiTool = new USPSApi(userId, api, getApplicationContext());

@@ -22,18 +22,22 @@
 
 package com.macleod2486.packagetracker.tools;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.core.app.JobIntentService;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import android.util.Log;
+
+import java.util.concurrent.TimeUnit;
 
 public class UpdaterReceiver extends BroadcastReceiver
 {
+    public PeriodicWorkRequest scheduledWorkRequest;
+
     @Override
     public void onReceive(Context arg0, Intent arg1)
     {
@@ -43,25 +47,13 @@ public class UpdaterReceiver extends BroadcastReceiver
 
         if(arg1.toString().contains(Intent.ACTION_BOOT_COMPLETED))
         {
-            //one second * 60 seconds in a minute * minutes
-            long interval = 1000*60*5;
+            long minutes = 5;
 
-            Intent service = new Intent(arg0, UpdaterReceiver.class);
-            PendingIntent pendingService = PendingIntent.getBroadcast(arg0, 0, service, 0);
-            AlarmManager newsUpdate = (AlarmManager)arg0.getSystemService(arg0.ALARM_SERVICE);
-
-            //Check for the update based on interval
-            newsUpdate.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, pendingService);
+            PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
+            scheduledWorkRequest = scheduledWorkRequestBuild.build();
+            WorkManager.getInstance().enqueue(scheduledWorkRequest);
 
             Log.i("UpdaterReceiver","PackageTracker Service started");
-        }
-        else
-        {
-            //Starting the news update class
-            Intent newsUpdate = new Intent(arg0, TrackingUpdater.class);
-            JobIntentService.enqueueWork(arg0, TrackingUpdater.class, 1001, newsUpdate);
-
-            Log.i("UpdaterReceiver","Broadcast finished");
         }
     }
 }
