@@ -47,9 +47,10 @@ public class UpdaterReceiver extends BroadcastReceiver
 
         if(arg1.toString().contains(Intent.ACTION_BOOT_COMPLETED))
         {
-            long minutes = 5;
+            long minutes = 10;
 
             PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
+            scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
             scheduledWorkRequest = scheduledWorkRequestBuild.build();
             WorkManager.getInstance().enqueue(scheduledWorkRequest);
 

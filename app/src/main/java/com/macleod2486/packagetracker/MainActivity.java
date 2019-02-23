@@ -23,11 +23,21 @@
 package com.macleod2486.packagetracker;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.macleod2486.packagetracker.fragments.Main;
+import com.macleod2486.packagetracker.tools.TrackingUpdater;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -44,5 +54,27 @@ public class MainActivity extends AppCompatActivity
         Main = new Main();
 
         manager.beginTransaction().replace(R.id.main, Main, "Main").commit();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        Log.i("Start","On start");
+
+        WorkManager manager = WorkManager.getInstance();
+        ListenableFuture<List<WorkInfo>> list = manager.getWorkInfosByTag("PackageTrackerUpdater");
+
+        if(list == null)
+        {
+            long minutes = 10;
+
+            PeriodicWorkRequest scheduledWorkRequest;
+            PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
+            scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
+            scheduledWorkRequest = scheduledWorkRequestBuild.build();
+            manager.enqueue(scheduledWorkRequest);
+        }
     }
 }

@@ -47,7 +47,7 @@ public class TrackingUpdater extends Worker
         Log.i("TrackingUpdater","Doing work");
 
         String userId = getApplicationContext().getResources().getString(R.string.USPSApiUserID);
-        String api = getApplicationContext().getResources().getString(R.string.USPSAPI);;
+        String api = getApplicationContext().getResources().getString(R.string.USPSAPI);
         USPSApi apiTool = new USPSApi(userId, api, getApplicationContext());
 
         ArrayList<String> trackingNumbers = apiTool.getTrackingNumbers();

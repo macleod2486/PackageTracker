@@ -38,9 +38,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class USPSApi
 {
-    String userID;
-    String APIUrl;
-    String[] listOfIds;
+    private String userID;
+    private String APIUrl;
+    private String[] listOfIds;
 
     PackageDatabaseManager manager;
 
