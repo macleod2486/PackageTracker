@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.i("MainActivity","Starting scheduled process");
 
-        long minutes = 10;
+        long minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 
         PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
