@@ -67,10 +67,9 @@ public class MainActivity extends AppCompatActivity
 
         long minutes = 10;
 
-        PeriodicWorkRequest scheduledWorkRequest;
         PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
-        scheduledWorkRequest = scheduledWorkRequestBuild.build();
+        PeriodicWorkRequest scheduledWorkRequest = scheduledWorkRequestBuild.build();
         manager.enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.KEEP, scheduledWorkRequest);
 
     }
