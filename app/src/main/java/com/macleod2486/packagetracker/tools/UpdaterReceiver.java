@@ -25,8 +25,8 @@ package com.macleod2486.packagetracker.tools;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -43,16 +43,14 @@ public class UpdaterReceiver extends BroadcastReceiver
     {
         Log.i("UpdaterReceiver","");
 
-        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(arg0.getApplicationContext());
-
         if(arg1.toString().contains(Intent.ACTION_BOOT_COMPLETED))
         {
-            long minutes = 10;
+            long minutes = 1;
 
-            PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
+            PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.SECONDS);
             scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
             scheduledWorkRequest = scheduledWorkRequestBuild.build();
-            WorkManager.getInstance().enqueue(scheduledWorkRequest);
+            WorkManager.getInstance().enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.REPLACE, scheduledWorkRequest);
 
             Log.i("UpdaterReceiver","PackageTracker Service started");
         }
