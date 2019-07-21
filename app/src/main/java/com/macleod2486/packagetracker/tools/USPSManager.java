@@ -59,7 +59,7 @@ public class USPSManager extends SQLiteOpenHelper
         Log.i("USPSManager","Upgrade called");
     }
 
-    public void addEntry(String trackingNumber, String service, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
+    public void addEntry(String trackingNumber, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
     {
         Cursor cursor;
         cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
@@ -69,7 +69,6 @@ public class USPSManager extends SQLiteOpenHelper
         ContentValues insert = new ContentValues();
         insert.put("id", id);
         insert.put("trackingnumber", trackingNumber);
-        insert.put("service", service);
 
         db.insert("TrackingNumbers",null,insert);
         cursor.close();
