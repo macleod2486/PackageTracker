@@ -42,13 +42,13 @@ public class USPSApi
     private String APIUrl;
     private String[] listOfIds;
 
-    PackageDatabaseManager manager;
+    USPSManager manager;
 
     public USPSApi(String userID, String APIUrl, Context context)
     {
         this.userID = userID;
         this.APIUrl = APIUrl;
-        this.manager = new PackageDatabaseManager(context,"PackageManager",null, 1);
+        this.manager = new USPSManager(context,"PackageManager",null, 1);
     }
 
     public Document getTrackingInfo(String trackingIDs)
@@ -125,7 +125,7 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = doc.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries(null, null, "USPS",true);
+            ArrayList<String> entries = manager.getEntries(null, null,false);
 
             for(int index = 0; index < summary.getLength(); index++)
             {
@@ -140,6 +140,8 @@ public class USPSApi
                 state = summaryNodes.item(4).getTextContent();
                 zipcode = summaryNodes.item(5).getTextContent();
                 country = summaryNodes.item(6).getTextContent();
+
+                Log.i("USPSApi",date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
 
                 manager.addEntry(trackingNumber,"USPS", date, time, description, city, state, zipcode, country);
             }
@@ -185,7 +187,7 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = result.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries(null, null,"USPS", true);
+            ArrayList<String> entries = manager.getEntries(null, null, true);
 
             //Check and update history
             ArrayList<String> completeHistory = getHistory(trackingNumber);
@@ -228,6 +230,6 @@ public class USPSApi
 
     public ArrayList<String> getTrackingNumbers()
     {
-        return manager.getEntries(null, null, "USPS", true);
+        return manager.getEntries(null, null, true);
     }
 }

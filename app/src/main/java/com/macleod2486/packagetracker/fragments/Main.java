@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.macleod2486.packagetracker.R;
+import com.macleod2486.packagetracker.tools.USPSManager;
 
 public class Main extends Fragment
 {
@@ -79,7 +80,8 @@ public class Main extends Fragment
             }
         });
 
-        ArrayList<String> statuses = new ArrayList<String>();
+        USPSManager manager = new USPSManager(getContext(), "USPS", null,1);
+        ArrayList<String> statuses = manager.getEntries(null, null, false);
         statuses.add("No current entries");
 
         ListView statusList = main.findViewById(R.id.status);

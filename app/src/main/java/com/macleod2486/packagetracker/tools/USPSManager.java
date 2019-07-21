@@ -31,32 +31,32 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class PackageDatabaseManager extends SQLiteOpenHelper
+public class USPSManager extends SQLiteOpenHelper
 {
     private SQLiteDatabase db;
 
-    public PackageDatabaseManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
+    public USPSManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
     {
         super(context, name, factory, version);
 
         db = this.getWritableDatabase();
 
-        Log.i("PackageDatabaseManager","Initializer called.");
+        Log.i("USPSManager","Initializer called.");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        Log.i("PackageDatabaseManager","On create called");
+        Log.i("USPSManager","On create called");
 
-        db.execSQL("Create table if not exists TrackingNumbers (id int not null, trackingnumber string(80), service string(30), primary key(id))");
+        db.execSQL("Create table if not exists TrackingNumbers (id int not null, trackingnumber string(80), primary key(id))");
         db.execSQL("Create table if not exists History (id int not null, trackingnumberid string(80), historyInfo string(500), date string(200), time string(30), city string(50), state string(2), zipcode string(5), country string(2), seen int(2), primary key(id))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        Log.i("PackageDatabaseManager","Upgrade called");
+        Log.i("USPSManager","Upgrade called");
     }
 
     public void addEntry(String trackingNumber, String service, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
@@ -104,11 +104,11 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
 
     }
 
-    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, String service, boolean hasReachedEnd)
+    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, boolean hasReachedEnd)
     {
         if(cursor == null)
         {
-            cursor = db.rawQuery("select trackingnumber from TrackingNumbers where service = '"+service+"'",null);
+            cursor = db.rawQuery("select trackingnumber from TrackingNumbers",null);
             cursor.moveToFirst();
         }
         if(entries == null) entries = new ArrayList<String>();
@@ -117,7 +117,7 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
         {
             entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
             hasReachedEnd = cursor.moveToNext();
-            getEntries(cursor, entries, service, hasReachedEnd);
+            getEntries(cursor, entries, hasReachedEnd);
         }
 
         return entries;
@@ -125,8 +125,14 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
 
     public String getTrackingId(String trackingNumber)
     {
+        String trackingid = "";
+
         Cursor cursor = db.rawQuery("select * from TrackingNumbers where trackingnumber = '"+trackingNumber+"'", null);
-        String trackingid = cursor.getString(cursor.getColumnIndex("id"));
+        Log.i("USPSManager","Cursor size "+cursor.getCount());
+        if(cursor.getCount() > 0)
+        {
+            trackingid = cursor.getString(cursor.getColumnIndex("id"));
+        }
 
         return trackingid;
     }
@@ -150,6 +156,8 @@ public class PackageDatabaseManager extends SQLiteOpenHelper
             String state = cursor.getString(cursor.getColumnIndex("state"));
             String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
             String country = cursor.getString(cursor.getColumnIndex("country"));
+
+            Log.i("USPSManager",date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
 
             history.add(date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
             hasReachedEnd = cursor.moveToNext();
