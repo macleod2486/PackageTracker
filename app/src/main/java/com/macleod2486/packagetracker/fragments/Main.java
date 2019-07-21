@@ -82,6 +82,7 @@ public class Main extends Fragment
 
         USPSManager manager = new USPSManager(getContext(), "USPS", null,1);
         ArrayList<String> statuses = manager.getEntries();
+        manager.close();
         statuses.add("No current entries");
 
         ListView statusList = main.findViewById(R.id.status);

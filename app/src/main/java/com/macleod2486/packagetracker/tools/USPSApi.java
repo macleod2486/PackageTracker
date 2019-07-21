@@ -48,7 +48,7 @@ public class USPSApi
     {
         this.userID = userID;
         this.APIUrl = APIUrl;
-        this.manager = new USPSManager(context,"PackageManager",null, 1);
+        this.manager = new USPSManager(context,"USPS",null, 1);
     }
 
     public Document getTrackingInfo(String trackingIDs)
