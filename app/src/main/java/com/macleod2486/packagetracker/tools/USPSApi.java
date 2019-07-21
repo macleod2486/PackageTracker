@@ -125,7 +125,7 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = doc.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries(null, null,false);
+            ArrayList<String> entries = manager.getEntries();
 
             for(int index = 0; index < summary.getLength(); index++)
             {
@@ -187,7 +187,7 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = result.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries(null, null, true);
+            ArrayList<String> entries = manager.getEntries();
 
             //Check and update history
             ArrayList<String> completeHistory = getHistory(trackingNumber);
@@ -230,6 +230,6 @@ public class USPSApi
 
     public ArrayList<String> getTrackingNumbers()
     {
-        return manager.getEntries(null, null, true);
+        return manager.getEntries();
     }
 }

@@ -103,20 +103,15 @@ public class USPSManager extends SQLiteOpenHelper
 
     }
 
-    public ArrayList<String> getEntries(Cursor cursor, ArrayList<String> entries, boolean hasReachedEnd)
+    public ArrayList<String> getEntries()
     {
-        if(cursor == null)
-        {
-            cursor = db.rawQuery("select trackingnumber from TrackingNumbers",null);
-            cursor.moveToFirst();
-        }
-        if(entries == null) entries = new ArrayList<String>();
+        ArrayList<String> entries = new ArrayList<String>();
+        Cursor cursor = db.rawQuery("select trackingnumber from TrackingNumbers",null);
+        cursor.moveToFirst();
 
-        if(cursor.getCount() > 0 && hasReachedEnd)
+        while(cursor.moveToNext())
         {
             entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
-            hasReachedEnd = cursor.moveToNext();
-            getEntries(cursor, entries, hasReachedEnd);
         }
 
         return entries;
