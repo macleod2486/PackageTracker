@@ -143,7 +143,7 @@ public class USPSApi
 
                 Log.i("USPSApi",date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
 
-                manager.addEntry(trackingNumber,"USPS", date, time, description, city, state, zipcode, country);
+                manager.addEntry(trackingNumber, date, time, description, city, state, zipcode, country);
             }
 
             completed = true;
