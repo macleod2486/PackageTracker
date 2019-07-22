@@ -67,8 +67,7 @@ public class USPS extends Fragment
                     public void run() {
                         Document result = apiTool.getTrackingInfo(trackingIDs);
                         apiTool.storeInitial(result);
-                        Log.i("USPS","Result: "+result);
-
+                        apiTool.closeDatabase();
                         manager.beginTransaction().replace(R.id.main, main, "Main").commit();
                     }
                 }).start();

@@ -141,7 +141,7 @@ public class USPSApi
                 zipcode = summaryNodes.item(5).getTextContent();
                 country = summaryNodes.item(6).getTextContent();
 
-                Log.i("USPSApi",date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
+                Log.i("USPSApi",trackingNumber+","+date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
 
                 manager.addEntry(trackingNumber, date, time, description, city, state, zipcode, country);
             }
@@ -231,5 +231,10 @@ public class USPSApi
     public ArrayList<String> getTrackingNumbers()
     {
         return manager.getEntries();
+    }
+
+    public void closeDatabase()
+    {
+        manager.close();
     }
 }

@@ -49,8 +49,8 @@ public class USPSManager extends SQLiteOpenHelper
     {
         Log.i("USPSManager","On create called");
 
-        db.execSQL("Create table if not exists TrackingNumbers (id int not null, trackingnumber string(80), primary key(id))");
-        db.execSQL("Create table if not exists History (id int not null, trackingnumberid string(80), historyInfo string(500), date string(200), time string(30), city string(50), state string(2), zipcode string(5), country string(2), seen int(2), primary key(id))");
+        db.execSQL("Create table if not exists TrackingNumbers (id INTEGER not null, trackingnumber TEXT, primary key(id))");
+        db.execSQL("Create table if not exists History (id INTEGER not null, trackingnumberid TEXT, historyInfo TEXT, date TEXT, time TEXT, city TEXT, state TEXT, zipcode TEXT, country TEXT, seen INTEGER, primary key(id))");
     }
 
     @Override
@@ -106,7 +106,7 @@ public class USPSManager extends SQLiteOpenHelper
     public ArrayList<String> getEntries()
     {
         ArrayList<String> entries = new ArrayList<String>();
-        Cursor cursor = db.rawQuery("select trackingnumber from TrackingNumbers",null);
+        Cursor cursor = db.rawQuery("select * from TrackingNumbers",null);
         cursor.moveToFirst();
 
         while(cursor.moveToNext())
