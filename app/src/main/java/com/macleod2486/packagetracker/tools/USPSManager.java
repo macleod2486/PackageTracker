@@ -111,7 +111,7 @@ public class USPSManager extends SQLiteOpenHelper
 
         while(cursor.moveToNext())
         {
-            entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
+            entries.add("USPS:"+cursor.getString(cursor.getColumnIndex("trackingnumber")));
         }
 
         return entries;
@@ -132,17 +132,14 @@ public class USPSManager extends SQLiteOpenHelper
         return trackingid;
     }
 
-    public ArrayList<String> getHistory(Cursor cursor, int trackingId, ArrayList<String> history, boolean hasReachedEnd)
+    public ArrayList<String> getHistory(int trackingId)
     {
-        if(cursor == null)
-        {
-            cursor = db.rawQuery("select * from History where trackingnumberid = '"+trackingId+"'",null);
-            cursor.moveToFirst();
-        }
+        Cursor cursor = db.rawQuery("select * from History where trackingnumberid = '"+trackingId+"'",null);
+        cursor.moveToFirst();
 
-        if(history == null) history = new ArrayList<String>();
+        ArrayList<String> history = new ArrayList<String>();
 
-        if(cursor.getCount() > 0 && hasReachedEnd)
+        while(cursor.moveToNext())
         {
             String date = cursor.getString(cursor.getColumnIndex("date"));
             String time = cursor.getString(cursor.getColumnIndex("time"));
@@ -155,8 +152,6 @@ public class USPSManager extends SQLiteOpenHelper
             Log.i("USPSManager",date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
 
             history.add(date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
-            hasReachedEnd = cursor.moveToNext();
-            getHistory(cursor, trackingId, history, hasReachedEnd);
         }
 
         return history;

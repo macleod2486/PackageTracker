@@ -225,7 +225,7 @@ public class USPSApi
     public ArrayList<String> getHistory(String trackingNumber)
     {
         int trackingId = manager.getTrackingId(trackingNumber);
-        return manager.getHistory(null, trackingId, null, false);
+        return manager.getHistory(trackingId);
     }
 
     public ArrayList<String> getTrackingNumbers()
