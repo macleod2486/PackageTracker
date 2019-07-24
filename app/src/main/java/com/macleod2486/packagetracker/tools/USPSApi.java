@@ -163,7 +163,7 @@ public class USPSApi
 
         //Reuse get tracking info for doc.
 
-        String trackingId = manager.getTrackingId(trackingNumber);
+        int trackingId = manager.getTrackingId(trackingNumber);
         Document result = getTrackingInfo(trackingNumber);
 
         try
@@ -210,7 +210,7 @@ public class USPSApi
                 completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
 
                 if(!completeHistory.contains(completeEntry))
-                    manager.addHistory(Integer.parseInt(trackingId), date, time, description, city, state, zipcode, country);
+                    manager.addHistory(trackingId, date, time, description, city, state, zipcode, country);
 
             }
         }
@@ -224,7 +224,7 @@ public class USPSApi
 
     public ArrayList<String> getHistory(String trackingNumber)
     {
-        String trackingId = manager.getTrackingId(trackingNumber);
+        int trackingId = manager.getTrackingId(trackingNumber);
         return manager.getHistory(null, trackingId, null, false);
     }
 

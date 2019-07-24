@@ -117,21 +117,22 @@ public class USPSManager extends SQLiteOpenHelper
         return entries;
     }
 
-    public String getTrackingId(String trackingNumber)
+    public int getTrackingId(String trackingNumber)
     {
-        String trackingid = "";
+        int trackingid = 0;
 
-        Cursor cursor = db.rawQuery("select * from TrackingNumbers where trackingnumber = '"+trackingNumber+"'", null);
-        Log.i("USPSManager","Cursor size "+cursor.getCount());
+        Cursor cursor = db.rawQuery("select id from TrackingNumbers where trackingnumber = '"+trackingNumber+"'", null);
+        cursor.moveToFirst();
+
         if(cursor.getCount() > 0)
         {
-            trackingid = cursor.getString(cursor.getColumnIndex("id"));
+            trackingid = cursor.getInt(cursor.getColumnIndex("id"));
         }
 
         return trackingid;
     }
 
-    public ArrayList<String> getHistory(Cursor cursor, String trackingId, ArrayList<String> history, boolean hasReachedEnd)
+    public ArrayList<String> getHistory(Cursor cursor, int trackingId, ArrayList<String> history, boolean hasReachedEnd)
     {
         if(cursor == null)
         {
