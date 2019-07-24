@@ -73,4 +73,17 @@ public class MainActivity extends AppCompatActivity
         manager.enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.KEEP, scheduledWorkRequest);
 
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(manager.getBackStackEntryCount() > 0)
+        {
+            manager.popBackStack();
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
 }

@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -73,7 +74,7 @@ public class Main extends Fragment
                     case "USPS":
                     {
                         Fragment USPS = new USPS();
-                        manager.beginTransaction().replace(R.id.main, USPS, "USPS").commit();
+                        manager.beginTransaction().replace(R.id.main, USPS, "USPS").addToBackStack(null).commit();
                     }
                 }
 
@@ -95,8 +96,20 @@ public class Main extends Fragment
                 return view;
             }
         });
+        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Log.i("Main", "Item clicked "+statuses.get(position).split(":")[1]);
+
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                Fragment USPSDetail = new USPSDetail();
+                ((USPSDetail) USPSDetail).trackingNumber = statuses.get(position).split(":")[1];
+                manager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
+            }
+        });
 
         return main;
     }
-
 }

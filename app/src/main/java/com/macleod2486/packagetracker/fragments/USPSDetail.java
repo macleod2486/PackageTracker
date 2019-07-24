@@ -25,17 +25,41 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
 import com.macleod2486.packagetracker.R;
+import com.macleod2486.packagetracker.tools.USPSManager;
+
+import java.util.ArrayList;
 
 public class USPSDetail extends Fragment
 {
+    public String trackingNumber;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View uspsDetailView = inflater.inflate(R.layout.fragment_usps_detail, container, false);
+
+        if(trackingNumber != null)
+        {
+            USPSManager manager  = new USPSManager(getContext(), "USPS", null, 1);
+            int trackingId = manager.getTrackingId(trackingNumber);
+            ArrayList<String> historyList = manager.getHistory(trackingId);
+            ListView statusList = uspsDetailView.findViewById(R.id.history);
+            statusList.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, historyList)
+            {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent)
+                {
+                    View view = super.getView(position, convertView, parent);
+                    return view;
+                }
+            });
+        }
 
         return uspsDetailView;
     }
