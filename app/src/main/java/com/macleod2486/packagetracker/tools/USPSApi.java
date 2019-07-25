@@ -88,8 +88,6 @@ public class USPSApi
             doc = builder.parse(connection.getInputStream());
 
             connection.disconnect();
-
-            storeInitial(doc);
         }
         catch (Exception e)
         {
@@ -132,18 +130,21 @@ public class USPSApi
                 summaryNodes = summary.item(index).getChildNodes();
 
                 trackingNumber = listOfIds[index];
-                if(entries.contains(trackingNumber)) continue;
-                time = summaryNodes.item(0).getTextContent();
-                date = summaryNodes.item(1).getTextContent();
-                description = summaryNodes.item(2).getTextContent();
-                city = summaryNodes.item(3).getTextContent();
-                state = summaryNodes.item(4).getTextContent();
-                zipcode = summaryNodes.item(5).getTextContent();
-                country = summaryNodes.item(6).getTextContent();
+                if(!entries.contains(trackingNumber))
+                {
+                    time = summaryNodes.item(0).getTextContent();
+                    date = summaryNodes.item(1).getTextContent();
+                    description = summaryNodes.item(2).getTextContent();
+                    city = summaryNodes.item(3).getTextContent();
+                    state = summaryNodes.item(4).getTextContent();
+                    zipcode = summaryNodes.item(5).getTextContent();
+                    country = summaryNodes.item(6).getTextContent();
 
-                Log.i("USPSApi",trackingNumber+","+date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
+                    Log.i("USPSApi",trackingNumber+","+date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
 
-                manager.addEntry(trackingNumber, date, time, description, city, state, zipcode, country);
+                    manager.addEntry(trackingNumber, date, time, description, city, state, zipcode, country);
+                }
+
             }
 
             completed = true;
@@ -187,7 +188,6 @@ public class USPSApi
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = result.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
-            ArrayList<String> entries = manager.getEntries();
 
             //Check and update history
             ArrayList<String> completeHistory = getHistory(trackingNumber);
@@ -198,7 +198,7 @@ public class USPSApi
                 summaryNodes = summary.item(index).getChildNodes();
 
                 trackingNumber = listOfIds[index];
-                if(entries.contains(trackingNumber)) continue;
+
                 time = summaryNodes.item(0).getTextContent();
                 date = summaryNodes.item(1).getTextContent();
                 description = summaryNodes.item(2).getTextContent();

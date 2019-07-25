@@ -101,11 +101,11 @@ public class Main extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Log.i("Main", "Item clicked "+statuses.get(position).split(":")[1]);
+                Log.i("Main", "Item clicked "+statuses.get(position));
 
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 Fragment USPSDetail = new USPSDetail();
-                ((USPSDetail) USPSDetail).trackingNumber = statuses.get(position).split(":")[1];
+                ((USPSDetail) USPSDetail).trackingNumber = statuses.get(position);
                 manager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
             }
         });
