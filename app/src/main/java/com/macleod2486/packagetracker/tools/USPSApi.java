@@ -197,8 +197,6 @@ public class USPSApi
             {
                 summaryNodes = summary.item(index).getChildNodes();
 
-                trackingNumber = listOfIds[index];
-
                 time = summaryNodes.item(0).getTextContent();
                 date = summaryNodes.item(1).getTextContent();
                 description = summaryNodes.item(2).getTextContent();
