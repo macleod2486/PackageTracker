@@ -106,12 +106,16 @@ public class USPSManager extends SQLiteOpenHelper
     public ArrayList<String> getEntries()
     {
         ArrayList<String> entries = new ArrayList<String>();
-        Cursor cursor = db.rawQuery("select * from TrackingNumbers",null);
+        Cursor cursor = db.query("TrackingNumbers",null, null, null, null, null, null);
         cursor.moveToFirst();
 
-        while(cursor.moveToNext())
+        if(cursor.getCount() > 0)
         {
-            entries.add("USPS:"+cursor.getString(cursor.getColumnIndex("trackingnumber")));
+            do
+            {
+                entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")));
+            }
+            while(cursor.moveToNext());
         }
 
         return entries;
@@ -134,26 +138,30 @@ public class USPSManager extends SQLiteOpenHelper
 
     public ArrayList<String> getHistory(int trackingId)
     {
-        Cursor cursor = db.rawQuery("select * from History where trackingnumberid = '"+trackingId+"'",null);
+        Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, null);
         cursor.moveToFirst();
 
         ArrayList<String> history = new ArrayList<String>();
 
-        while(cursor.moveToNext())
+        if(cursor.getCount() > 0)
         {
-            String date = cursor.getString(cursor.getColumnIndex("date"));
-            String time = cursor.getString(cursor.getColumnIndex("time"));
-            String historyinfo = cursor.getString(cursor.getColumnIndex("historyinfo"));
-            String city = cursor.getString(cursor.getColumnIndex("city"));
-            String state = cursor.getString(cursor.getColumnIndex("state"));
-            String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
-            String country = cursor.getString(cursor.getColumnIndex("country"));
+            do
+            {
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String time = cursor.getString(cursor.getColumnIndex("time"));
+                String historyinfo = cursor.getString(cursor.getColumnIndex("historyInfo"));
+                String city = cursor.getString(cursor.getColumnIndex("city"));
+                String state = cursor.getString(cursor.getColumnIndex("state"));
+                String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
+                String country = cursor.getString(cursor.getColumnIndex("country"));
 
-            Log.i("USPSManager",date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
+                Log.i("USPSManager",date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
 
-            history.add(date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
+                history.add(date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
+            }while(cursor.moveToNext());
         }
 
+        cursor.close();
         return history;
     }
 }
