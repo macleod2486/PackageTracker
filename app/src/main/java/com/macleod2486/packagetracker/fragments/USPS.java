@@ -50,7 +50,6 @@ public class USPS extends Fragment
         api = uspsView.getResources().getString(R.string.USPSAPI);
 
         EditText text = uspsView.findViewById(R.id.trackingEntry);
-        text.getText().toString();
 
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS);
         addUSPSTracking.setOnClickListener(new View.OnClickListener()
@@ -58,6 +57,7 @@ public class USPS extends Fragment
             @Override
             public void onClick(View v)
             {
+                trackingIDs = text.getText().toString();
                 new InitalizeEntry().execute();
             }
         });
