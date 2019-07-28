@@ -24,7 +24,6 @@ package com.macleod2486.packagetracker.fragments;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +64,6 @@ public class Main extends Fragment
             {
                 String selection = vendorsDropdown.getSelectedItem().toString();
 
-                Log.i("MainActivity","Selected "+selection);
-
                 FragmentManager manager = getActivity().getSupportFragmentManager();
 
                 switch(selection)
@@ -82,31 +79,25 @@ public class Main extends Fragment
         });
 
         USPSManager manager = new USPSManager(getContext(), "USPS", null,1);
-        ArrayList<String> statuses = manager.getEntries();
+        ArrayList<String> entries = manager.getEntries();
         manager.close();
-        statuses.add("No current entries");
+        if(entries.size() == 0) entries.add("No current entries");
 
-        ListView statusList = main.findViewById(R.id.status);
-        statusList.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, statuses)
-        {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
-                View view = super.getView(position, convertView, parent);
-                return view;
-            }
-        });
-        statusList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        ListView entryList = main.findViewById(R.id.entries);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, entries);
+        entryList.setAdapter(arrayAdapter);
+        entryList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Log.i("Main", "Item clicked "+statuses.get(position));
-
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                Fragment USPSDetail = new USPSDetail();
-                ((USPSDetail) USPSDetail).trackingNumber = statuses.get(position);
-                manager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
+                if(entries.size() > 0)
+                {
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    Fragment USPSDetail = new USPSDetail();
+                    ((USPSDetail) USPSDetail).trackingNumber = entries.get(position);
+                    manager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
+                }
             }
         });
 

@@ -29,18 +29,11 @@
 
         </Button>
 
-        <ScrollView
+        <ListView
+            android:id="@+id/entries"
+            android:layout_below="@id/add"
             android:layout_width="match_parent"
-            android:layout_height="488dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp">
-
-                <ListView
-                    android:id="@+id/status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
 </RelativeLayout>
