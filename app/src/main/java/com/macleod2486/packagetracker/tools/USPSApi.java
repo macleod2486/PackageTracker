@@ -189,21 +189,40 @@ public class USPSApi
             NodeList summary = result.getElementsByTagName("TrackSummary");
             NodeList summaryNodes;
 
+            NodeList trackDetail = result.getElementsByTagName("TrackDetail");
+            NodeList trackNodes;
+
             //Check and update history
             ArrayList<String> completeHistory = getHistory(trackingNumber);
             String completeEntry = "";
 
-            for(int index = 0; index < summary.getLength(); index++)
-            {
-                summaryNodes = summary.item(index).getChildNodes();
+            summaryNodes = summary.item(0).getChildNodes();
 
-                time = summaryNodes.item(0).getTextContent();
-                date = summaryNodes.item(1).getTextContent();
-                description = summaryNodes.item(2).getTextContent();
-                city = summaryNodes.item(3).getTextContent();
-                state = summaryNodes.item(4).getTextContent();
-                zipcode = summaryNodes.item(5).getTextContent();
-                country = summaryNodes.item(6).getTextContent();
+            time = summaryNodes.item(0).getTextContent();
+            date = summaryNodes.item(1).getTextContent();
+            description = summaryNodes.item(2).getTextContent();
+            city = summaryNodes.item(3).getTextContent();
+            state = summaryNodes.item(4).getTextContent();
+            zipcode = summaryNodes.item(5).getTextContent();
+            country = summaryNodes.item(6).getTextContent();
+
+            completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
+
+            if(!completeHistory.contains(completeEntry))
+                manager.addHistory(trackingId, date, time, description, city, state, zipcode, country);
+
+            //Add the rest of the entire history
+            for(int index = 0; index < trackDetail.getLength(); index++)
+            {
+                trackNodes = trackDetail.item(index).getChildNodes();
+
+                time = trackNodes.item(0).getTextContent();
+                date = trackNodes.item(1).getTextContent();
+                description = trackNodes.item(2).getTextContent();
+                city = trackNodes.item(3).getTextContent();
+                state = trackNodes.item(4).getTextContent();
+                zipcode = trackNodes.item(5).getTextContent();
+                country = trackNodes.item(6).getTextContent();
 
                 completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
 
