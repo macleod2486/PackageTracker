@@ -61,8 +61,7 @@ public class USPSManager extends SQLiteOpenHelper
 
     public void addEntry(String trackingNumber, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
     {
-        Cursor cursor;
-        cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
+        Cursor cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
         cursor.moveToFirst();
 
         int id = cursor.getInt(0) + 1;
@@ -124,7 +123,7 @@ public class USPSManager extends SQLiteOpenHelper
     {
         int trackingid = 0;
 
-        Cursor cursor = db.rawQuery("select id from TrackingNumbers where trackingnumber = '"+trackingNumber+"'", null);
+        Cursor cursor = db.query("trackingnumbers", null, "trackingnumber = ?", new String[] {trackingNumber}, null, null, null);
         cursor.moveToFirst();
 
         if(cursor.getCount() > 0)
