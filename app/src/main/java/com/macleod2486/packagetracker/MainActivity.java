@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        Log.i("Start","On start");
-
         WorkManager manager = WorkManager.getInstance();
 
         Log.i("MainActivity","Starting scheduled process");

@@ -55,14 +55,10 @@ public class USPS extends Fragment
         EditText text = uspsView.findViewById(R.id.trackingEntry);
 
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS);
-        addUSPSTracking.setOnClickListener(new View.OnClickListener()
+        addUSPSTracking.setOnClickListener((View v) ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                trackingIDs = text.getText().toString();
-                new InitalizeEntry().execute();
-            }
+            trackingIDs = text.getText().toString();
+            new InitalizeEntry().execute();
         });
 
         progress = uspsView.findViewById(R.id.uspsAddProgress);
@@ -76,12 +72,9 @@ public class USPS extends Fragment
         @Override
         protected Void doInBackground(Void...params)
         {
-            getActivity().runOnUiThread(new Runnable()
+            getActivity().runOnUiThread(() ->
             {
-                @Override
-                public void run() {
-                    progress.setVisibility(View.VISIBLE);
-                }
+                progress.setVisibility(View.VISIBLE);
             });
 
             String userId = getActivity().getResources().getString(R.string.USPSApiUserID);
@@ -101,12 +94,9 @@ public class USPS extends Fragment
 
         protected void onPostExecute(Void result)
         {
-            getActivity().runOnUiThread(new Runnable()
+            getActivity().runOnUiThread(() ->
             {
-                @Override
-                public void run() {
-                    progress.setVisibility(View.INVISIBLE);
-                }
+                progress.setVisibility(View.INVISIBLE);
             });
 
             FragmentManager manager = getActivity().getSupportFragmentManager();

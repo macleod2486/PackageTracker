@@ -139,7 +139,7 @@ public class USPSManager extends SQLiteOpenHelper
         Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, null);
         cursor.moveToFirst();
 
-        ArrayList<String> history = new ArrayList<String>();
+        ArrayList<String> history = new ArrayList<>();
 
         if(cursor.getCount() > 0)
         {

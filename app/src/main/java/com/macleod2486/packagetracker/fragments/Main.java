@@ -48,33 +48,29 @@ public class Main extends Fragment
     {
         main = inflater.inflate(R.layout.content_main, container, false);
 
-        final Spinner vendorsDropdown = (Spinner) main.findViewById(R.id.vendorsDropdown);
+        final Spinner vendorsDropdown = main.findViewById(R.id.vendorsDropdown);
 
         ArrayList<String> listOfVendors = new ArrayList<String>();
         listOfVendors.addAll(Arrays.asList(getResources().getStringArray(R.array.vendors)));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line, listOfVendors);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, listOfVendors);
 
         vendorsDropdown.setAdapter(adapter);
 
-        Button add = (Button)main.findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener()
+        Button add = main.findViewById(R.id.add);
+        add.setOnClickListener((View view) ->
         {
-            public void onClick(View view)
+            String selection = vendorsDropdown.getSelectedItem().toString();
+
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+
+            switch(selection)
             {
-                String selection = vendorsDropdown.getSelectedItem().toString();
-
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-
-                switch(selection)
+                case "USPS":
                 {
-                    case "USPS":
-                    {
-                        Fragment USPS = new USPS();
-                        manager.beginTransaction().replace(R.id.main, USPS, "USPS").addToBackStack(null).commit();
-                    }
+                    Fragment USPS = new USPS();
+                    manager.beginTransaction().replace(R.id.main, USPS, "USPS").addToBackStack(null).commit();
                 }
-
             }
         });
 
@@ -86,19 +82,16 @@ public class Main extends Fragment
         ListView entryList = main.findViewById(R.id.entries);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, entries);
         entryList.setAdapter(arrayAdapter);
-        entryList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        entryList.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) ->
         {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            if(entries.size() > 0)
             {
-                if(entries.size() > 0)
-                {
-                    FragmentManager manager = getActivity().getSupportFragmentManager();
-                    Fragment USPSDetail = new USPSDetail();
-                    ((USPSDetail) USPSDetail).trackingNumber = entries.get(position);
-                    manager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
-                }
+                FragmentManager fragManager = getActivity().getSupportFragmentManager();
+                Fragment USPSDetail = new USPSDetail();
+                ((USPSDetail) USPSDetail).trackingNumber = entries.get(position);
+                fragManager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
             }
+
         });
 
         return main;
