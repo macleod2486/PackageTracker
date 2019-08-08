@@ -47,7 +47,7 @@ public class UpdaterReceiver extends BroadcastReceiver
         {
             long minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 
-            PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
+            PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MILLISECONDS);
             scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
             scheduledWorkRequest = scheduledWorkRequestBuild.build();
             WorkManager.getInstance().enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.REPLACE, scheduledWorkRequest);

@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         long minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 
-        PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MINUTES);
+        PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MILLISECONDS);
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
         PeriodicWorkRequest scheduledWorkRequest = scheduledWorkRequestBuild.build();
         manager.enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.KEEP, scheduledWorkRequest);
