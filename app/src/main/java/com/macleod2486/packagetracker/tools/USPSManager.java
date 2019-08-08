@@ -162,4 +162,51 @@ public class USPSManager extends SQLiteOpenHelper
         cursor.close();
         return history;
     }
+
+    public ArrayList<String> getHistoryForDisplay(int trackingId)
+    {
+        Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, null);
+        cursor.moveToFirst();
+
+        ArrayList<String> history = new ArrayList<String>();
+
+        if(cursor.getCount() > 0)
+        {
+            do
+            {
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String time = cursor.getString(cursor.getColumnIndex("time"));
+                String historyinfo = cursor.getString(cursor.getColumnIndex("historyInfo"));
+                String city = cursor.getString(cursor.getColumnIndex("city"));
+                String state = cursor.getString(cursor.getColumnIndex("state"));
+                String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
+                String country = cursor.getString(cursor.getColumnIndex("country"));
+
+                Log.i("USPSManager",date+","+time+","+historyinfo+","+city+","+state+","+zipcode+","+country);
+
+                String historyString = "";
+
+                //Format display.
+                if(!date.isEmpty()) historyString += date;
+
+                if(!time.isEmpty()) historyString += "\n" + time;
+
+                if(!historyinfo.isEmpty()) historyString += "\n" + historyinfo;
+
+                if(!city.isEmpty()) historyString += "\n" + city;
+
+                if(!state.isEmpty()) historyString += "\n" + state;
+
+                if(!zipcode.isEmpty()) historyString += "\n" + zipcode;
+
+                if(!country.isEmpty()) historyString += "\n" + country;
+
+                history.add(historyString);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        return history;
+    }
+
 }
