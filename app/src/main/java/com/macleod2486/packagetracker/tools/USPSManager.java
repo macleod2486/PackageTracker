@@ -96,10 +96,13 @@ public class USPSManager extends SQLiteOpenHelper
         db.insert("History",null,insert);
         cursor.close();
     }
-
-    public void deleteEntryAndHistory()
+    //TODO: Complete entries and history
+    public void deleteEntryAndHistory(String trackingNumber)
     {
+        int trackingId = getTrackingId(trackingNumber);
 
+        db.delete("TrackingNumbers", "trackingnumber = ?", new String[]{ trackingNumber});
+        db.delete("History", "trackingnumberid = ?", new String[]{Integer.toString(trackingId)});
     }
 
     public ArrayList<String> getEntries()
