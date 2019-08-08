@@ -24,6 +24,8 @@ package com.macleod2486.packagetracker.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.macleod2486.packagetracker.R;
 import com.macleod2486.packagetracker.tools.USPSApi;
@@ -42,6 +45,7 @@ public class USPS extends Fragment
     String api;
     Button addUSPSTracking;
     String trackingIDs;
+    ProgressBar progress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -62,6 +66,9 @@ public class USPS extends Fragment
             }
         });
 
+        progress = uspsView.findViewById(R.id.uspsAddProgress);
+        progress.setVisibility(View.INVISIBLE);
+
         return uspsView;
     }
 
@@ -70,6 +77,14 @@ public class USPS extends Fragment
         @Override
         protected Void doInBackground(Void...params)
         {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run() {
+                    progress.setVisibility(View.VISIBLE);
+                }
+            });
+
             String userId = getActivity().getResources().getString(R.string.USPSApiUserID);
             USPSApi apiTool = new USPSApi(userId, api, getContext());
             Document result = apiTool.getTrackingInfo(trackingIDs);
@@ -87,6 +102,14 @@ public class USPS extends Fragment
 
         protected void onPostExecute(Void result)
         {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run() {
+                    progress.setVisibility(View.INVISIBLE);
+                }
+            });
+
             FragmentManager manager = getActivity().getSupportFragmentManager();
             manager.popBackStack();
         }

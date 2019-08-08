@@ -20,4 +20,12 @@
         android:scrollbars="none"
         android:id="@+id/trackingEntry"/>
 
+    <ProgressBar
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/uspsAddProgress"
+        />
+
 </RelativeLayout>
