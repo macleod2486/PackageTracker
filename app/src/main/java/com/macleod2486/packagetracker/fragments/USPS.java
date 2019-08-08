@@ -25,7 +25,6 @@ package com.macleod2486.packagetracker.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
