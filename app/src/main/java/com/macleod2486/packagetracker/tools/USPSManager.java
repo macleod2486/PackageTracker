@@ -168,7 +168,7 @@ public class USPSManager extends SQLiteOpenHelper
 
     public ArrayList<String> getHistoryForDisplay(int trackingId)
     {
-        Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, null);
+        Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, "id DESC");
         cursor.moveToFirst();
 
         ArrayList<String> history = new ArrayList<String>();
