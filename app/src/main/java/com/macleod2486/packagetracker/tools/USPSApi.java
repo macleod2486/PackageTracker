@@ -110,7 +110,6 @@ public class USPSApi
             //5 - Event Zipcode
             //6 - Event Country
 
-            String trackingNumber;
             String time;
             String date;
             String description;
