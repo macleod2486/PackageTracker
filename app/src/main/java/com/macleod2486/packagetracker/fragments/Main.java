@@ -84,7 +84,7 @@ public class Main extends Fragment
         entryList.setAdapter(arrayAdapter);
         entryList.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) ->
         {
-            if(entries.size() > 0)
+            if(!entries.contains("No current entries"))
             {
                 FragmentManager fragManager = getActivity().getSupportFragmentManager();
                 Fragment USPSDetail = new USPSDetail();
