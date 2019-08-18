@@ -77,12 +77,13 @@ public class USPS extends Fragment
 
             String userId = getActivity().getResources().getString(R.string.USPSApiUserID);
             USPSApi apiTool = new USPSApi(userId, getContext());
-            Document result = apiTool.getTrackingInfo(trackingIDs);
-            apiTool.storeInitial(result);
-
             String ids[] = trackingIDs.split(",");
+
             for(String id : ids)
             {
+                Document result = apiTool.getTrackingInfo(id);
+                apiTool.trackingNumber = id;
+                apiTool.storeInitial(result);
                 apiTool.updateHistory(id);
             }
             apiTool.closeDatabase();

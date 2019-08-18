@@ -43,7 +43,7 @@ public class USPSApi
     private String userID;
     private String APIUrl;
     private Context context;
-    private String[] listOfIds;
+    public String trackingNumber;
 
     USPSManager manager;
 
@@ -128,8 +128,7 @@ public class USPSApi
             {
                 summaryNodes = summary.item(index).getChildNodes();
 
-                trackingNumber = listOfIds[index];
-                if(!entries.contains(trackingNumber))
+                if(!entries.contains(this.trackingNumber))
                 {
                     time = summaryNodes.item(0).getTextContent();
                     date = summaryNodes.item(1).getTextContent();
@@ -139,9 +138,9 @@ public class USPSApi
                     zipcode = summaryNodes.item(5).getTextContent();
                     country = summaryNodes.item(6).getTextContent();
 
-                    Log.i("USPSApi",trackingNumber+","+date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
+                    Log.i("USPSApi",this.trackingNumber+","+date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
 
-                    manager.addEntry(trackingNumber, date, time, description, city, state, zipcode, country);
+                    manager.addEntry(this.trackingNumber, date, time, description, city, state, zipcode, country);
                 }
 
             }
