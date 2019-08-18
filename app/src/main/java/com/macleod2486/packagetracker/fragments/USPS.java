@@ -41,7 +41,6 @@ import org.w3c.dom.Document;
 
 public class USPS extends Fragment
 {
-    String api;
     Button addUSPSTracking;
     String trackingIDs;
     ProgressBar progress;
@@ -50,7 +49,6 @@ public class USPS extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View uspsView = inflater.inflate(R.layout.fragment_usps, container, false);
-        api = uspsView.getResources().getString(R.string.USPSAPI);
 
         EditText text = uspsView.findViewById(R.id.trackingEntry);
 
@@ -78,7 +76,7 @@ public class USPS extends Fragment
             });
 
             String userId = getActivity().getResources().getString(R.string.USPSApiUserID);
-            USPSApi apiTool = new USPSApi(userId, api, getContext());
+            USPSApi apiTool = new USPSApi(userId, getContext());
             Document result = apiTool.getTrackingInfo(trackingIDs);
             apiTool.storeInitial(result);
 

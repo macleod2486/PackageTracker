@@ -26,6 +26,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.macleod2486.packagetracker.R;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -40,41 +42,38 @@ public class USPSApi
 {
     private String userID;
     private String APIUrl;
+    private Context context;
     private String[] listOfIds;
 
     USPSManager manager;
 
-    public USPSApi(String userID, String APIUrl, Context context)
+    public USPSApi(String userID, Context context)
     {
         this.userID = userID;
-        this.APIUrl = APIUrl;
+        this.context = context;
         this.manager = new USPSManager(context,"USPS",null, 1);
     }
 
-    public Document getTrackingInfo(String trackingIDs)
+    public Document getTrackingInfo(String trackingID)
     {
         Document doc = null;
 
         //Generate request
         String xml = "<TrackFieldRequest USERID=\""+userID+"\">";
 
-        listOfIds = trackingIDs.split(",");
-
-        for (String id: listOfIds)
-        {
-            xml += "<TrackID ID=\""+id+"\"></TrackID>";
-        }
+        xml += "<TrackID ID=\""+trackingID+"\"></TrackID>";
 
         xml += "</TrackFieldRequest>";
 
-        this.APIUrl = Uri.parse(this.APIUrl).buildUpon()
+        String baseURL = context.getResources().getString(R.string.USPSAPI);
+        this.APIUrl = Uri.parse(baseURL).buildUpon()
                 .appendQueryParameter("API","TrackV2")
                 .appendQueryParameter("XML",xml)
                 .build().toString();
 
         Log.i("USPSApi",this.APIUrl);
 
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
         try
         {
             URL url = new URL(APIUrl);
@@ -187,16 +186,12 @@ public class USPSApi
 
             //Summary (Roughly the most recent part of the tracking)
             NodeList summary = result.getElementsByTagName("TrackSummary");
-            NodeList summaryNodes;
-
-            NodeList trackDetail = result.getElementsByTagName("TrackDetail");
-            NodeList trackNodes;
 
             //Check and update history
             ArrayList<String> completeHistory = getHistory(trackingNumber);
             String completeEntry = "";
 
-            summaryNodes = summary.item(0).getChildNodes();
+            NodeList summaryNodes = summary.item(0).getChildNodes();
 
             time = summaryNodes.item(0).getTextContent();
             date = summaryNodes.item(1).getTextContent();
@@ -211,10 +206,12 @@ public class USPSApi
             if(!completeHistory.contains(completeEntry))
                 manager.addHistory(trackingId, date, time, description, city, state, zipcode, country);
 
+            NodeList trackDetail = result.getElementsByTagName("TrackDetail");
+
             //Add the rest of the entire history
             for(int index = 0; index < trackDetail.getLength(); index++)
             {
-                trackNodes = trackDetail.item(index).getChildNodes();
+                NodeList trackNodes = trackDetail.item(index).getChildNodes();
 
                 time = trackNodes.item(0).getTextContent();
                 date = trackNodes.item(1).getTextContent();
@@ -225,6 +222,7 @@ public class USPSApi
                 country = trackNodes.item(6).getTextContent();
 
                 completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
+                Log.i("USPSApi", completeEntry);
 
                 if(!completeHistory.contains(completeEntry))
                     manager.addHistory(trackingId, date, time, description, city, state, zipcode, country);
