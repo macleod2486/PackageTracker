@@ -94,6 +94,21 @@ public class Main extends Fragment
 
         });
 
+        entryList.setOnItemLongClickListener((AdapterView<?> parent, View view, int position, long id) ->
+        {
+            if(!entries.contains("No current entries"))
+            {
+                USPSManager tempManager = new USPSManager(getContext(), "USPS", null,1);
+                tempManager.deleteEntryAndHistory(entries.get(position));
+                ArrayList<String> tempEntries = tempManager.getEntries();
+                if(tempEntries.size() == 0) tempEntries.add("No current entries");
+                tempManager.close();
+                ArrayAdapter<String> tempAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, tempEntries);
+                entryList.setAdapter(tempAdapter);
+            }
+            return true;
+        });
+
         return main;
     }
 }

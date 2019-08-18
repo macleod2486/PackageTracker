@@ -96,7 +96,7 @@ public class USPSManager extends SQLiteOpenHelper
         db.insert("History",null,insert);
         cursor.close();
     }
-    //TODO: Complete entries and history
+
     public void deleteEntryAndHistory(String trackingNumber)
     {
         int trackingId = getTrackingId(trackingNumber);
