@@ -21,6 +21,8 @@
  */
 package com.macleod2486.packagetracker.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -98,13 +100,28 @@ public class Main extends Fragment
         {
             if(!entries.contains("No current entries"))
             {
-                USPSManager tempManager = new USPSManager(getContext(), "USPS", null,1);
-                tempManager.deleteEntryAndHistory(entries.get(position));
-                ArrayList<String> tempEntries = tempManager.getEntries();
-                if(tempEntries.size() == 0) tempEntries.add("No current entries");
-                tempManager.close();
-                ArrayAdapter<String> tempAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, tempEntries);
-                entryList.setAdapter(tempAdapter);
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                alertBuilder.setMessage("Delete "+entries.get(position));
+                alertBuilder.setPositiveButton("Yes", ((DialogInterface dialog, int which) ->
+                {
+
+                    USPSManager tempManager = new USPSManager(getContext(), "USPS", null,1);
+                    tempManager.deleteEntryAndHistory(entries.get(position));
+                    ArrayList<String> tempEntries = tempManager.getEntries();
+                    if(tempEntries.size() == 0) tempEntries.add("No current entries");
+                    tempManager.close();
+                    ArrayAdapter<String> tempAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, tempEntries);
+                    entryList.setAdapter(tempAdapter);
+
+                }));
+
+                alertBuilder.setNegativeButton("No", ((DialogInterface dialog, int which) ->
+                {
+
+                }));
+
+                AlertDialog dialog = alertBuilder.create();
+                dialog.show();
             }
             return true;
         });
