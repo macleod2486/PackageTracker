@@ -44,6 +44,7 @@ import com.macleod2486.packagetracker.tools.USPSManager;
 public class Main extends Fragment
 {
     View main;
+    ArrayList<String> entries;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -77,7 +78,7 @@ public class Main extends Fragment
         });
 
         USPSManager manager = new USPSManager(getContext(), "USPS", null,1);
-        ArrayList<String> entries = manager.getEntries();
+        entries = manager.getEntries();
         manager.close();
         if(entries.size() == 0) entries.add("No current entries");
 
@@ -104,16 +105,15 @@ public class Main extends Fragment
                 alertBuilder.setMessage("Delete "+entries.get(position));
                 alertBuilder.setPositiveButton("Yes", ((DialogInterface dialog, int which) ->
                 {
-
                     USPSManager tempManager = new USPSManager(getContext(), "USPS", null,1);
                     tempManager.deleteEntryAndHistory(entries.get(position));
                     ArrayList<String> tempEntries = tempManager.getEntries();
                     if(tempEntries.size() == 0) tempEntries.add("No current entries");
+                    this.entries = tempEntries;
                     tempManager.close();
                     ArrayAdapter<String> tempAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, tempEntries);
                     entryList.setAdapter(tempAdapter);
                     tempManager.close();
-
                 }));
 
                 alertBuilder.setNegativeButton("No", ((DialogInterface dialog, int which) ->
