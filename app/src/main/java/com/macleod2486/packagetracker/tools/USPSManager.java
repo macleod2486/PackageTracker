@@ -49,8 +49,8 @@ public class USPSManager extends SQLiteOpenHelper
     {
         Log.i("USPSManager","On create called");
 
-        db.execSQL("Create table if not exists TrackingNumbers (id INTEGER not null, trackingnumber TEXT, primary key(id))");
-        db.execSQL("Create table if not exists History (id INTEGER not null, trackingnumberid INTEGER, historyInfo TEXT, date TEXT, time TEXT, city TEXT, state TEXT, zipcode TEXT, country TEXT, seen INTEGER)");
+        db.execSQL("Create table if not exists TrackingNumbers (trackingnumber TEXT)");
+        db.execSQL("Create table if not exists History (id INTEGER not null, trackingnumber TEXT, historyInfo TEXT, date TEXT, time TEXT, city TEXT, state TEXT, zipcode TEXT, country TEXT, seen INTEGER)");
     }
 
     @Override
@@ -61,30 +61,24 @@ public class USPSManager extends SQLiteOpenHelper
 
     public void addEntry(String trackingNumber, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
     {
-        Cursor cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
-        cursor.moveToFirst();
-
-        int id = cursor.getInt(0) + 1;
         ContentValues insert = new ContentValues();
-        insert.put("id", id);
         insert.put("trackingnumber", trackingNumber);
 
         db.insert("TrackingNumbers",null,insert);
-        cursor.close();
 
-        addHistory(id, date, time, historyInfo, city, state, zipcode, country);
+        addHistory(trackingNumber, date, time, historyInfo, city, state, zipcode, country);
     }
 
-    public void addHistory(int trackingNumberId, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
+    public void addHistory(String trackingNumber, String date, String time, String historyInfo, String city, String state, String zipcode, String country)
     {
         Cursor cursor;
-        cursor = db.rawQuery("select max(id) from TrackingNumbers",null);
+        cursor = db.rawQuery("select max(id) from History",null);
         cursor.moveToFirst();
 
         int id = cursor.getInt(0) + 1;
         ContentValues insert = new ContentValues();
         insert.put("id",id);
-        insert.put("trackingnumberid", trackingNumberId);
+        insert.put("trackingnumber", trackingNumber);
         insert.put("date", date);
         insert.put("historyinfo", historyInfo);
         insert.put("time", time);
@@ -99,10 +93,8 @@ public class USPSManager extends SQLiteOpenHelper
 
     public void deleteEntryAndHistory(String trackingNumber)
     {
-        int trackingId = getTrackingId(trackingNumber);
-
-        db.delete("TrackingNumbers", "trackingnumber = ?", new String[]{ trackingNumber});
-        db.delete("History", "trackingnumberid = ?", new String[]{Integer.toString(trackingId)});
+        db.delete("TrackingNumbers", "trackingnumber = ?", new String[]{trackingNumber});
+        db.delete("History", "trackingnumber = ?", new String[]{trackingNumber});
     }
 
     public ArrayList<String> getEntries()
@@ -122,24 +114,9 @@ public class USPSManager extends SQLiteOpenHelper
         return entries;
     }
 
-    public int getTrackingId(String trackingNumber)
+    public ArrayList<String> getHistory(String trackingNumber)
     {
-        int trackingid = 0;
-
-        Cursor cursor = db.query("trackingnumbers", null, "trackingnumber = ?", new String[] {trackingNumber}, null, null, null);
-        cursor.moveToFirst();
-
-        if(cursor.getCount() > 0)
-        {
-            trackingid = cursor.getInt(cursor.getColumnIndex("id"));
-        }
-
-        return trackingid;
-    }
-
-    public ArrayList<String> getHistory(int trackingId)
-    {
-        Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, null);
+        Cursor cursor = db.query("History",null,"trackingnumber = ?",new String[]{trackingNumber}, null, null, null);
         cursor.moveToFirst();
 
         ArrayList<String> history = new ArrayList<>();
@@ -166,9 +143,9 @@ public class USPSManager extends SQLiteOpenHelper
         return history;
     }
 
-    public ArrayList<String> getHistoryForDisplay(int trackingId)
+    public ArrayList<String> getHistoryForDisplay(String trackingNumber)
     {
-        Cursor cursor = db.query("History",null,"trackingnumberid = ?",new String[]{Integer.toString(trackingId)}, null, null, "id DESC");
+        Cursor cursor = db.query("History",null,"trackingnumber = ?",new String[]{trackingNumber}, null, null, "id DESC");
         cursor.moveToFirst();
 
         ArrayList<String> history = new ArrayList<String>();

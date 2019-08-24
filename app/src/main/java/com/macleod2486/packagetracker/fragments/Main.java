@@ -112,6 +112,7 @@ public class Main extends Fragment
                     tempManager.close();
                     ArrayAdapter<String> tempAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, tempEntries);
                     entryList.setAdapter(tempAdapter);
+                    tempManager.close();
 
                 }));
 
