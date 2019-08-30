@@ -19,11 +19,15 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add"
-            app:icon="@mipmap/add_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true">
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="42dp"
+            app:icon="@mipmap/add_icon"
+            app:iconTintMode="multiply"
+            android:text="@string/AddButtonText">
 
         </com.google.android.material.button.MaterialButton>
 

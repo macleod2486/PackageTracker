@@ -14,4 +14,6 @@
 
     <string name="USPSHint">Enter tracking number(s)</string>
 
+    <string name="AddButtonText">Add Entry</string>
+
 </resources>
