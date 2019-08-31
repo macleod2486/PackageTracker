@@ -56,6 +56,8 @@ public class TrackingUpdater extends Worker
             apiTool.updateHistory(trackingNumber);
         }
 
+        apiTool.closeDatabase();
+
         return Result.success();
     }
 }
