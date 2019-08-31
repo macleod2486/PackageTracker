@@ -84,7 +84,7 @@ public class USPS extends Fragment
                 Document result = apiTool.getTrackingInfo(id);
                 apiTool.trackingNumber = id;
                 apiTool.storeInitial(result);
-                apiTool.updateHistory(id);
+                apiTool.initialHistory(id);
             }
             apiTool.closeDatabase();
 

@@ -25,6 +25,7 @@ package com.macleod2486.packagetracker.tools;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.macleod2486.packagetracker.R;
 
@@ -90,6 +91,8 @@ public class USPSApi
         }
         catch (Exception e)
         {
+            Toast errorToast = Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            errorToast.show();
             Log.i("USPSAPIError",e.getMessage());
         }
 
@@ -148,6 +151,8 @@ public class USPSApi
         }
         catch(Exception e)
         {
+            Toast errorToast = Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            errorToast.show();
             e.printStackTrace();
             Log.e("USPSApiError",e.getMessage());
             completed = false;
@@ -157,6 +162,81 @@ public class USPSApi
     }
 
     public void updateHistory(String trackingNumber)
+    {
+        Document result = getTrackingInfo(trackingNumber);
+
+        try
+        {
+            //0 - Event Time
+            //1 - Event Date
+            //2 - Event description
+            //3 - Event City
+            //4 - Event State
+            //5 - Event Zipcode
+            //6 - Event Country
+
+            String time;
+            String date;
+            String description;
+            String city;
+            String state;
+            String zipcode;
+            String country;
+
+            //Check and update history
+            ArrayList<String> completeHistory = getHistory(trackingNumber);
+            String completeEntry = "";
+
+            NodeList trackDetail = result.getElementsByTagName("TrackDetail");
+
+            //Add the details first
+            for(int index = trackDetail.getLength() - 1; index >= 0 ; index--)
+            {
+                NodeList trackNodes = trackDetail.item(index).getChildNodes();
+
+                time = trackNodes.item(0).getTextContent();
+                date = trackNodes.item(1).getTextContent();
+                description = trackNodes.item(2).getTextContent();
+                city = trackNodes.item(3).getTextContent();
+                state = trackNodes.item(4).getTextContent();
+                zipcode = trackNodes.item(5).getTextContent();
+                country = trackNodes.item(6).getTextContent();
+
+                completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
+                Log.i("USPSApi", completeEntry);
+
+                if(!completeHistory.contains(completeEntry))
+                    manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country);
+
+            }
+
+            //Then add the latest entry at the top last.
+            NodeList summary = result.getElementsByTagName("TrackSummary");
+            NodeList summaryNodes = summary.item(0).getChildNodes();
+
+            time = summaryNodes.item(0).getTextContent();
+            date = summaryNodes.item(1).getTextContent();
+            description = summaryNodes.item(2).getTextContent();
+            city = summaryNodes.item(3).getTextContent();
+            state = summaryNodes.item(4).getTextContent();
+            zipcode = summaryNodes.item(5).getTextContent();
+            country = summaryNodes.item(6).getTextContent();
+
+            completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
+
+            if(!completeHistory.contains(completeEntry))
+                manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country);
+        }
+        catch(Exception e)
+        {
+            Toast errorToast = Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            errorToast.show();
+            e.printStackTrace();
+            Log.e("USPSAPI",e.getMessage());
+        }
+    }
+
+    public void initialHistory(String trackingNumber)
     {
 
         //Reuse get tracking info for doc.
@@ -228,6 +308,8 @@ public class USPSApi
         }
         catch(Exception e)
         {
+            Toast errorToast = Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            errorToast.show();
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
         }
