@@ -142,7 +142,7 @@ public class USPSApi
 
                     Log.i("USPSApi",this.trackingNumber+","+date+","+time+","+description+","+city+","+state+","+zipcode+","+country);
 
-                    manager.addEntry(this.trackingNumber, date, time, description, city, state, zipcode, country);
+                    manager.addEntry(this.trackingNumber, date, time, description, city, state, zipcode, country, 0);
                 }
 
             }
@@ -206,7 +206,7 @@ public class USPSApi
                 Log.i("USPSApi", completeEntry);
 
                 if(!completeHistory.contains(completeEntry))
-                    manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country);
+                    manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 0);
 
             }
 
@@ -225,7 +225,7 @@ public class USPSApi
             completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
 
             if(!completeHistory.contains(completeEntry))
-                manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country);
+                manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 0);
         }
         catch(Exception e)
         {
@@ -281,7 +281,7 @@ public class USPSApi
             completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
 
             if(!completeHistory.contains(completeEntry))
-                manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country);
+                manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 1);
 
             NodeList trackDetail = result.getElementsByTagName("TrackDetail");
 
@@ -302,7 +302,7 @@ public class USPSApi
                 Log.i("USPSApi", completeEntry);
 
                 if(!completeHistory.contains(completeEntry))
-                    manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country);
+                    manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 1);
 
             }
         }
