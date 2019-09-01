@@ -22,7 +22,11 @@
 
 package com.macleod2486.packagetracker.tools;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -30,6 +34,7 @@ import androidx.annotation.NonNull;
 import com.macleod2486.packagetracker.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -54,6 +59,45 @@ public class TrackingUpdater extends Worker
         for(String trackingNumber: trackingNumbers)
         {
             apiTool.updateHistory(trackingNumber);
+        }
+
+        HashMap<String, ArrayList<String>> newEntries = apiTool.getNewEntries();
+
+        if(newEntries != null && newEntries.size() > 0)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+                NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
+                CharSequence name = getApplicationContext().getString(R.string.NotificationCategoryName);
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                String channel_id = TrackingUpdater.class.toString();
+                NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+                notificationManager.createNotificationChannel(channel);
+
+                for(String trackingNumber: trackingNumbers)
+                {
+                    ArrayList<String> entryDetails = newEntries.get(trackingNumber);
+
+                    if(entryDetails != null && entryDetails.size() > 0)
+                    {
+                        Notification.InboxStyle style = new Notification.InboxStyle();
+                        for(String entryDetail: entryDetails)
+                        {
+                            style.addLine(entryDetail.split(",")[2]);
+                        }
+
+                        Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.drawable.ic_launcher_foreground)
+                                .setContentTitle("New Updates!")
+                                .setContentText(trackingNumber)
+                                .setStyle(style).build();
+
+                        notificationManager.notify(channel_id, 0, notification);
+                    }
+
+                }
+
+            }
+
         }
 
         apiTool.closeDatabase();

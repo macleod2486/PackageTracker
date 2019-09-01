@@ -16,4 +16,6 @@
 
     <string name="AddButtonText">Add Entry</string>
 
+    <string name="NotificationCategoryName">Package Status Updates</string>
+
 </resources>

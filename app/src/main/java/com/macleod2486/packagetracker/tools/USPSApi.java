@@ -35,6 +35,7 @@ import org.w3c.dom.NodeList;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,6 +46,7 @@ public class USPSApi
     private String APIUrl;
     private Context context;
     public String trackingNumber;
+    private HashMap<String, ArrayList<String>> newEntries;
 
     USPSManager manager;
 
@@ -167,6 +169,9 @@ public class USPSApi
 
         try
         {
+            newEntries = new HashMap<>();
+            ArrayList<String> entries = new ArrayList<>();
+
             //0 - Event Time
             //1 - Event Date
             //2 - Event description
@@ -206,8 +211,10 @@ public class USPSApi
                 Log.i("USPSApi", completeEntry);
 
                 if(!completeHistory.contains(completeEntry))
+                {
+                    entries.add(completeEntry);
                     manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 0);
-
+                }
             }
 
             //Then add the latest entry at the top last.
@@ -225,7 +232,12 @@ public class USPSApi
             completeEntry = date+","+time+","+description+","+city+","+state+","+zipcode+","+country;
 
             if(!completeHistory.contains(completeEntry))
+            {
+                entries.add(completeEntry);
                 manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 0);
+            }
+
+            newEntries.put(trackingNumber, entries);
         }
         catch(Exception e)
         {
@@ -329,5 +341,10 @@ public class USPSApi
     public void closeDatabase()
     {
         manager.close();
+    }
+
+    public HashMap<String, ArrayList<String>> getNewEntries()
+    {
+        return newEntries;
     }
 }
