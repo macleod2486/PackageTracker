@@ -65,8 +65,6 @@ public class USPSManager extends SQLiteOpenHelper
         insert.put("trackingnumber", trackingNumber);
 
         db.insert("TrackingNumbers",null,insert);
-
-        addHistory(trackingNumber, date, time, historyInfo, city, state, zipcode, country, seen);
     }
 
     public void addHistory(String trackingNumber, String date, String time, String historyInfo, String city, String state, String zipcode, String country, int seen)
@@ -146,7 +144,7 @@ public class USPSManager extends SQLiteOpenHelper
 
     public ArrayList<String> getHistoryForDisplay(String trackingNumber)
     {
-        Cursor cursor = db.query("History",null,"trackingnumber = ?",new String[]{trackingNumber}, null, null, "id ASC");
+        Cursor cursor = db.query("History",null,"trackingnumber = ?",new String[]{trackingNumber}, null, null, "id DESC");
         cursor.moveToFirst();
 
         ArrayList<String> history = new ArrayList<String>();

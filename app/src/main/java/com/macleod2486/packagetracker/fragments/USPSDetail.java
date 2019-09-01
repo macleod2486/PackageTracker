@@ -48,6 +48,7 @@ public class USPSDetail extends Fragment
         {
             USPSManager manager  = new USPSManager(getContext(), "USPS", null, 1);
             ArrayList<String> historyList = manager.getHistoryForDisplay(trackingNumber);
+            manager.close();
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, historyList);
             ListView statusList = uspsDetailView.findViewById(R.id.history);
             statusList.setAdapter(arrayAdapter);
