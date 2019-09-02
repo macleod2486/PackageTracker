@@ -33,8 +33,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.macleod2486.packagetracker.MainActivity;
 import com.macleod2486.packagetracker.R;
-import com.macleod2486.packagetracker.fragments.Main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,9 +90,9 @@ public class TrackingUpdater extends Worker
                             style.addLine(entryDetail.split(",")[3]);
                         }
 
-                        Intent mainIntent = new Intent(getApplicationContext(), Main.class);
+                        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        PendingIntent mainPending = PendingIntent.getActivity(getApplicationContext(), 1, mainIntent, 0);
+                        PendingIntent mainPending = PendingIntent.getActivity(getApplicationContext(), 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                         Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
                                 .setContentTitle(trackingNumber)
