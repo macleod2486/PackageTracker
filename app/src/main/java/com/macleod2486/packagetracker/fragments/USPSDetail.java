@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.macleod2486.packagetracker.R;
@@ -46,6 +47,16 @@ public class USPSDetail extends Fragment
 
         if(trackingNumber != null)
         {
+            Toolbar toolbar = uspsDetailView.findViewById(R.id.uspsdetailstoolbar);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+            toolbar.setTitle(trackingNumber);
+            toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+            toolbar.setNavigationOnClickListener((View view) ->
+                 {
+                     getActivity().getSupportFragmentManager().popBackStack();
+                 }
+            );
+
             USPSManager manager  = new USPSManager(getContext(), "USPS", null, 1);
             ArrayList<String> historyList = manager.getHistoryForDisplay(trackingNumber);
             manager.close();
