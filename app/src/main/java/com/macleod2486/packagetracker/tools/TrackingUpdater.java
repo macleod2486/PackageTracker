@@ -25,13 +25,16 @@ package com.macleod2486.packagetracker.tools;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.macleod2486.packagetracker.R;
+import com.macleod2486.packagetracker.fragments.Main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,9 +90,16 @@ public class TrackingUpdater extends Worker
                             style.addLine(entryDetail.split(",")[3]);
                         }
 
+                        Intent mainIntent = new Intent(getApplicationContext(), Main.class);
+                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        PendingIntent mainPending = PendingIntent.getActivity(getApplicationContext(), 1, mainIntent, 0);
+
                         Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
                                 .setContentTitle(trackingNumber)
-                                .setStyle(style).build();
+                                .setStyle(style)
+                                .setAutoCancel(true)
+                                .setContentIntent(mainPending)
+                                .build();
 
                         notificationManager.notify(channel_id, 0, notification);
                     }
