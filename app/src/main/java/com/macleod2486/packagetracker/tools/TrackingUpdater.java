@@ -83,12 +83,12 @@ public class TrackingUpdater extends Worker
                         Notification.InboxStyle style = new Notification.InboxStyle();
                         for(String entryDetail: entryDetails)
                         {
-                            style.addLine(entryDetail.split(",")[2]);
+                            Log.i("TrackingUpdater", entryDetail.split(",")[3]);
+                            style.addLine(entryDetail.split(",")[3]);
                         }
 
-                        Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.drawable.ic_launcher_foreground)
-                                .setContentTitle("New Updates!")
-                                .setContentText(trackingNumber)
+                        Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
+                                .setContentTitle(trackingNumber)
                                 .setStyle(style).build();
 
                         notificationManager.notify(channel_id, 0, notification);
