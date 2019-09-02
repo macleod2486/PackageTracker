@@ -3,7 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/uspstoolbar"
+        />
+
     <Button
+        android:layout_below="@id/uspstoolbar"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:id="@+id/addUSPS"

@@ -25,6 +25,7 @@ package com.macleod2486.packagetracker.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -49,6 +50,16 @@ public class USPS extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View uspsView = inflater.inflate(R.layout.fragment_usps, container, false);
+
+        Toolbar toolbar = uspsView.findViewById(R.id.uspstoolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setTitle("Add tracking numbers");
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        toolbar.setNavigationOnClickListener((View view) ->
+                {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+        );
 
         EditText text = uspsView.findViewById(R.id.trackingEntry);
 
