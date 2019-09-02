@@ -39,6 +39,7 @@ import com.macleod2486.packagetracker.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -68,15 +69,6 @@ public class TrackingUpdater extends Worker
 
         if(newEntries != null && newEntries.size() > 0)
         {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            {
-                NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-                CharSequence name = getApplicationContext().getString(R.string.NotificationCategoryName);
-                int importance = NotificationManager.IMPORTANCE_DEFAULT;
-                String channel_id = TrackingUpdater.class.toString();
-                NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
-                notificationManager.createNotificationChannel(channel);
-
                 for(String trackingNumber: trackingNumbers)
                 {
                     ArrayList<String> entryDetails = newEntries.get(trackingNumber);
@@ -94,19 +86,42 @@ public class TrackingUpdater extends Worker
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         PendingIntent mainPending = PendingIntent.getActivity(getApplicationContext(), 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                        Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
-                                .setContentTitle(trackingNumber)
-                                .setStyle(style)
-                                .setAutoCancel(true)
-                                .setContentIntent(mainPending)
-                                .build();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        {
 
-                        notificationManager.notify(channel_id, 0, notification);
+                            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
+                            CharSequence name = getApplicationContext().getString(R.string.NotificationCategoryName);
+                            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                            String channel_id = TrackingUpdater.class.toString();
+                            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+                            notificationManager.createNotificationChannel(channel);
+
+                            Notification notification = new Notification.Builder(getApplicationContext(), channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
+                                    .setContentTitle(trackingNumber)
+                                    .setStyle(style)
+                                    .setAutoCancel(true)
+                                    .setContentIntent(mainPending)
+                                    .build();
+
+                            notificationManager.notify(channel_id, 0, notification);
+                        }
+                        else
+                        {
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                            Notification notification = new Notification.Builder(getApplicationContext()).setSmallIcon(R.mipmap.ic_launcher_round)
+                                    .setContentTitle(trackingNumber)
+                                    .setStyle(style)
+                                    .setAutoCancel(true)
+                                    .setContentIntent(mainPending)
+                                    .build();
+
+                            notificationManager.notify(0, notification);
+                        }
+
                     }
 
                 }
 
-            }
 
         }
 
