@@ -9,8 +9,8 @@
 
         <Spinner
             android:id="@+id/vendorsDropdown"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="47dp"
@@ -25,7 +25,9 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="42dp"
-            app:icon="@mipmap/add_icon"
+            android:layout_alignRight="@id/entries"
+            android:layout_margin="5dp"
+            app:icon="@drawable/ic_add_circle_outline_black_24dp"
             app:iconTintMode="multiply"
             android:text="@string/AddButtonText">
 
