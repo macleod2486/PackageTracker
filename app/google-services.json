@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "593590854624",
+    "firebase_url": "https://packagetracker-543f4.firebaseio.com",
+    "project_id": "packagetracker-543f4",
+    "storage_bucket": "packagetracker-543f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593590854624:android:50bf4ddd8a7fea1a",
+        "android_client_info": {
+          "package_name": "com.macleod2486.packagetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593590854624-buuad3q7jrl5ir8bu60eegte6dp5j4id.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0FzIiEaS36ccnPBp4vHm-HxkJtipsYnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593590854624-buuad3q7jrl5ir8bu60eegte6dp5j4id.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
