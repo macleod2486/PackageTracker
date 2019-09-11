@@ -26,6 +26,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.macleod2486.packagetracker.R;
 
 import org.w3c.dom.Document;
@@ -93,6 +94,7 @@ public class USPSApi
         catch (Exception e)
         {
             Log.i("USPSAPIError", e.getMessage());
+            Crashlytics.logException(e);
         }
 
         return doc;
@@ -152,6 +154,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSApiError",e.getMessage());
+            Crashlytics.logException(e);
             completed = false;
         }
 
@@ -238,6 +241,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
+            Crashlytics.logException(e);
         }
     }
 
@@ -314,6 +318,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
+            Crashlytics.logException(e);
         }
 
     }
