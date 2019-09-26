@@ -33,10 +33,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.macleod2486.packagetracker.R;
 import com.macleod2486.packagetracker.tools.USPSManager;
@@ -51,30 +49,12 @@ public class Main extends Fragment
     {
         main = inflater.inflate(R.layout.content_main, container, false);
 
-        final Spinner vendorsDropdown = main.findViewById(R.id.vendorsDropdown);
-
-        ArrayList<String> listOfVendors = new ArrayList<String>();
-        listOfVendors.addAll(Arrays.asList(getResources().getStringArray(R.array.vendors)));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, listOfVendors);
-
-        vendorsDropdown.setAdapter(adapter);
-
         Button add = main.findViewById(R.id.add);
         add.setOnClickListener((View view) ->
         {
-            String selection = vendorsDropdown.getSelectedItem().toString();
-
             FragmentManager manager = getActivity().getSupportFragmentManager();
-
-            switch(selection)
-            {
-                case "USPS":
-                {
-                    Fragment USPS = new USPS();
-                    manager.beginTransaction().replace(R.id.main, USPS, "USPS").addToBackStack(null).commit();
-                }
-            }
+            Fragment USPS = new USPS();
+            manager.beginTransaction().replace(R.id.main, USPS, "USPS").addToBackStack(null).commit();
         });
 
         USPSManager manager = new USPSManager(getContext(), "USPS", null,1);

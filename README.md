@@ -4,10 +4,10 @@ PackageTracker
 
 - General purpose package tracking application that keeps you up to date with the status of your packages.
 
-- Currently supports the following services
+- Supports the following services
 	- USPS
 
-- Future planned services
+- The following will not be supported due to them charging to use their API
 	- UPS
 	- FedEx
 	- DHS

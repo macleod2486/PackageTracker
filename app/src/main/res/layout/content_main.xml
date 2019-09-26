@@ -7,16 +7,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.macleod2486.packagetracker.MainActivity">
 
-        <Spinner
-            android:id="@+id/vendorsDropdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="47dp"
-            android:textSize="14sp"
-            android:visibility="visible"></Spinner>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add"
             android:layout_width="wrap_content"
@@ -28,8 +18,8 @@
             android:layout_alignRight="@id/entries"
             android:layout_margin="5dp"
             app:icon="@drawable/ic_add_circle_outline_black_24dp"
-            app:iconTintMode="multiply"
-            android:text="@string/AddButtonText">
+            app:iconGravity="textStart"
+            app:iconPadding="0dp">
 
         </com.google.android.material.button.MaterialButton>
 

@@ -2,19 +2,12 @@
     <string name="app_name">Package Tracker</string>
     <string name="title_activity_main">Package Tracker</string>
 
-    <string-array name="vendors">
-        <item>Select one</item>
-        <item>USPS</item>
-    </string-array>
-
     <string name="addButtonText">Add</string>
 
     <string name="USPSAPI">http://production.shippingapis.com/ShippingAPI.dll</string>
     <string name="USPSApiUserID">Your Username</string>
 
     <string name="USPSHint">Enter tracking number(s), separate with a comma (,) between the numbers</string>
-
-    <string name="AddButtonText">Add Entry</string>
 
     <string name="NotificationCategoryName">Package Status Updates</string>
 
