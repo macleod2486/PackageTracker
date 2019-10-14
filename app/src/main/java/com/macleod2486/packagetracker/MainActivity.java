@@ -24,10 +24,13 @@ package com.macleod2486.packagetracker;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity
 
         manager = getSupportFragmentManager();
         Main = new Main();
+
+        getSupportActionBar().setTitle(R.string.app_name);
 
         manager.beginTransaction().replace(R.id.main, Main, "Main").commit();
     }
@@ -84,4 +89,26 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        menu.add(0, 1, 1, "Settings");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        Fragment fragmentCheck = manager.findFragmentByTag("Settings");
+
+        if(fragmentCheck == null)
+        {
+            PreferenceFragmentCompat preferenceFragment = new Settings();
+            manager.beginTransaction().replace(R.id.main, preferenceFragment, "Settings").addToBackStack(null).commit();
+        }
+
+        return true;
+    }
+
 }

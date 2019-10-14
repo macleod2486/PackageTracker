@@ -11,4 +11,24 @@
 
     <string name="NotificationCategoryName">Package Status Updates</string>
 
+    <string name="SettingsTitle">Settings</string>
+    <string-array name="FrequencyTitles">
+        <item>15m</item>
+        <item>30m</item>
+        <item>1hr</item>
+        <item>3hr</item>
+        <item>6hr</item>
+        <item>12hr</item>
+        <item>1d</item>
+    </string-array>
+    <string-array name="FrequencyValues">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>12</item>
+        <item>24</item>
+        <item>48</item>
+        <item>96</item>
+    </string-array>
+
 </resources>
