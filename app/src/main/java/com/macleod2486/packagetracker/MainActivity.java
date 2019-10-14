@@ -22,6 +22,7 @@
 
 package com.macleod2486.packagetracker;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -69,12 +71,35 @@ public class MainActivity extends AppCompatActivity
         Log.i("MainActivity","Starting scheduled process");
 
         long minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String multiplier = preferences.getString("freq", "1");
+        minutes = minutes * Integer.parseInt(multiplier);
 
         PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MILLISECONDS);
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
         PeriodicWorkRequest scheduledWorkRequest = scheduledWorkRequestBuild.build();
         manager.enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.KEEP, scheduledWorkRequest);
 
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+
+        WorkManager manager = WorkManager.getInstance();
+
+        Log.i("MainActivity","Starting scheduled process");
+
+        long minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String multiplier = preferences.getString("freq", "1");
+        minutes = minutes * Integer.parseInt(multiplier);
+
+        PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MILLISECONDS);
+        scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
+        PeriodicWorkRequest scheduledWorkRequest = scheduledWorkRequestBuild.build();
+        manager.enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.KEEP, scheduledWorkRequest);
     }
 
     @Override

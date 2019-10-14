@@ -26,10 +26,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.preference.PreferenceManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
@@ -46,6 +48,10 @@ public class UpdaterReceiver extends BroadcastReceiver
         if(arg1.toString().contains(Intent.ACTION_BOOT_COMPLETED))
         {
             long minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(arg0);
+            String multiplier = preferences.getString("freq", "1");
+            minutes = minutes * Integer.parseInt(multiplier);
 
             PeriodicWorkRequest.Builder scheduledWorkRequestBuild = new PeriodicWorkRequest.Builder(TrackingUpdater.class, minutes, TimeUnit.MILLISECONDS);
             scheduledWorkRequestBuild.addTag("PackageTrackerUpdater");
