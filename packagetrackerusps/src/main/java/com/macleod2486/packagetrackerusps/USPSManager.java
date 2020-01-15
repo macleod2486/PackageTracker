@@ -20,7 +20,7 @@
  *
  */
 
-package com.macleod2486.packagetracker.tools;
+package com.macleod2486.packagetrackerusps;
 
 import android.content.ContentValues;
 import android.content.Context;

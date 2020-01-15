@@ -1,7 +1,7 @@
 /*
  *
- *   PackageTracker
- *    a simple application for keeping track of multiple packages from multiple services
+ *   PackageTrackerUSPS
+ *    a library that contains classes necessary to handle USPS data
  *
  *    Copyright (C) 2018  Manuel Gonzales Jr.
  *
@@ -20,14 +20,13 @@
  *
  */
 
-package com.macleod2486.packagetracker.tools;
+package com.macleod2486.packagetrackerusps;
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.macleod2486.packagetracker.R;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;

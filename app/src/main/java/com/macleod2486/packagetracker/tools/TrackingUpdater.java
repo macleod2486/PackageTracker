@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 
 import com.macleod2486.packagetracker.MainActivity;
 import com.macleod2486.packagetracker.R;
+import com.macleod2486.packagetrackerusps.USPSApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -37,7 +37,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import com.macleod2486.packagetracker.R;
-import com.macleod2486.packagetracker.tools.USPSManager;
+import com.macleod2486.packagetrackerusps.USPSManager;
 
 public class Main extends Fragment
 {

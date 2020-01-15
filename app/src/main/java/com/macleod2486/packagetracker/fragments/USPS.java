@@ -36,7 +36,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.macleod2486.packagetracker.R;
-import com.macleod2486.packagetracker.tools.USPSApi;
+import com.macleod2486.packagetrackerusps.USPSApi;
 
 import org.w3c.dom.Document;
 

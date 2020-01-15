@@ -32,7 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.macleod2486.packagetracker.R;
-import com.macleod2486.packagetracker.tools.USPSManager;
+import com.macleod2486.packagetrackerusps.USPSManager;
 
 import java.util.ArrayList;
 

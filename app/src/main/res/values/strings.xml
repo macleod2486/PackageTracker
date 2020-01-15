@@ -4,9 +4,6 @@
 
     <string name="addButtonText">Add</string>
 
-    <string name="USPSAPI">http://production.shippingapis.com/ShippingAPI.dll</string>
-    <string name="USPSApiUserID">Your Username</string>
-
     <string name="USPSHint">Enter tracking number(s), separate with a comma (,) between the numbers</string>
 
     <string name="NotificationCategoryName">Package Status Updates</string>
