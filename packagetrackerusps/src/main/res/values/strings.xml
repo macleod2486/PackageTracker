@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">PackageTrackerUSPS</string>
     <string name="USPSAPI">http://production.shippingapis.com/ShippingAPI.dll</string>
-    <string name="USPSApiUserID"></string>
 
 </resources>

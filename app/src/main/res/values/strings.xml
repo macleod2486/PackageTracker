@@ -6,6 +6,8 @@
 
     <string name="USPSHint">Enter tracking number(s), separate with a comma (,) between the numbers</string>
 
+    <string name="USPSApiUserID">Your username here</string>
+
     <string name="NotificationCategoryName">Package Status Updates</string>
 
     <string name="SettingsTitle">Settings</string>
