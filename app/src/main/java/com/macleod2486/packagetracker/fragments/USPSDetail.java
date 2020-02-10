@@ -31,6 +31,7 @@ import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.macleod2486.packagetracker.PackageTrackerApplication;
 import com.macleod2486.packagetracker.R;
 import com.macleod2486.packagetrackerusps.USPSManager;
 
@@ -38,12 +39,14 @@ import java.util.ArrayList;
 
 public class USPSDetail extends Fragment
 {
-    public String trackingNumber;
+    String trackingNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View uspsDetailView = inflater.inflate(R.layout.fragment_usps_detail, container, false);
+
+        trackingNumber = getArguments().getString("trackingnumber");
 
         if(trackingNumber != null)
         {
@@ -53,7 +56,7 @@ public class USPSDetail extends Fragment
             toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
             toolbar.setNavigationOnClickListener((View view) ->
                  {
-                     getActivity().getSupportFragmentManager().popBackStack();
+                     PackageTrackerApplication.navController.popBackStack();
                  }
             );
 

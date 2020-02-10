@@ -68,10 +68,9 @@ public class Main extends Fragment
         {
             if(!entries.contains("No current entries"))
             {
-                FragmentManager fragManager = getActivity().getSupportFragmentManager();
-                Fragment USPSDetail = new USPSDetail();
-                ((USPSDetail) USPSDetail).trackingNumber = entries.get(position);
-                PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail);
+                Bundle bundle = new Bundle();
+                bundle.putString("trackingnumber", entries.get(position));
+                PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail, bundle);
             }
 
         });
