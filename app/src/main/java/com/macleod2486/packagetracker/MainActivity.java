@@ -100,19 +100,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if(manager.getBackStackEntryCount() > 0)
-        {
-            manager.popBackStack();
-        }
-        else
-        {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         menu.add(0, 1, 1, "Settings");
