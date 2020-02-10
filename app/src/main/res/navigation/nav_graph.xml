@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/main2">
+    <fragment
+        android:id="@+id/USPSDetail"
+        android:name="com.macleod2486.packagetracker.fragments.USPSDetail"
+        android:label="fragment_usps_detail"
+        tools:layout="@layout/fragment_usps_detail" />
+    <fragment
+        android:id="@+id/main2"
+        android:name="com.macleod2486.packagetracker.fragments.Main"
+        android:label="content_main"
+        tools:layout="@layout/content_main" >
+        <action
+            android:id="@+id/action_main2_to_USPSDetail"
+            app:destination="@id/USPSDetail" />
+        <action
+            android:id="@+id/action_main2_to_USPS2"
+            app:destination="@id/USPS2" />
+        <action
+            android:id="@+id/action_main2_to_settings"
+            app:destination="@id/settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/USPS2"
+        android:name="com.macleod2486.packagetracker.fragments.USPS"
+        android:label="fragment_usps"
+        tools:layout="@layout/fragment_usps" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.macleod2486.packagetracker.Settings"
+        android:label="Settings" />
+</navigation>

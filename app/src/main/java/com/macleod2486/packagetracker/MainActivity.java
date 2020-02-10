@@ -31,13 +31,12 @@ import android.view.MenuItem;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import com.macleod2486.packagetracker.fragments.Main;
 import com.macleod2486.packagetracker.tools.TrackingUpdater;
 
 import java.util.concurrent.TimeUnit;
@@ -45,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity
 {
     FragmentManager manager;
-    Fragment Main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,11 +52,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         manager = getSupportFragmentManager();
-        Main = new Main();
 
         getSupportActionBar().setTitle(R.string.app_name);
 
-        manager.beginTransaction().replace(R.id.main, Main, "Main").commit();
+        PackageTrackerApplication.navHost = (NavHostFragment) manager.findFragmentById(R.id.nav_host_fragment);
+        PackageTrackerApplication.navController = PackageTrackerApplication.navHost.getNavController();
     }
 
     @Override
@@ -129,8 +127,7 @@ public class MainActivity extends AppCompatActivity
 
         if(fragmentCheck == null)
         {
-            PreferenceFragmentCompat preferenceFragment = new Settings();
-            manager.beginTransaction().replace(R.id.main, preferenceFragment, "Settings").addToBackStack(null).commit();
+            PackageTrackerApplication.navController.navigate(R.id.action_main2_to_settings);
         }
 
         return true;

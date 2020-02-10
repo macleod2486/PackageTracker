@@ -36,6 +36,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import com.macleod2486.packagetracker.PackageTrackerApplication;
 import com.macleod2486.packagetracker.R;
 import com.macleod2486.packagetrackerusps.USPSManager;
 
@@ -52,9 +53,7 @@ public class Main extends Fragment
         Button add = main.findViewById(R.id.add);
         add.setOnClickListener((View view) ->
         {
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            Fragment USPS = new USPS();
-            manager.beginTransaction().replace(R.id.main, USPS, "USPS").addToBackStack(null).commit();
+            PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPS2);
         });
 
         USPSManager manager = new USPSManager(getContext(), "USPS", null,1);
@@ -72,7 +71,7 @@ public class Main extends Fragment
                 FragmentManager fragManager = getActivity().getSupportFragmentManager();
                 Fragment USPSDetail = new USPSDetail();
                 ((USPSDetail) USPSDetail).trackingNumber = entries.get(position);
-                fragManager.beginTransaction().replace(R.id.main, USPSDetail, "USPSDetail").addToBackStack(null).commit();
+                PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail);
             }
 
         });
