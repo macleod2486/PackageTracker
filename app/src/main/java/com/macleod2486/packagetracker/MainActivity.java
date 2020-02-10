@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.fragment.NavHostFragment;
@@ -123,12 +122,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        Fragment fragmentCheck = manager.findFragmentByTag("Settings");
-
-        if(fragmentCheck == null)
-        {
+        if(PackageTrackerApplication.navController.getCurrentDestination().getId() != R.id.settings)
             PackageTrackerApplication.navController.navigate(R.id.action_main2_to_settings);
-        }
 
         return true;
     }
