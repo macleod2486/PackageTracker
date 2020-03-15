@@ -53,6 +53,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_main2_to_settings">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
