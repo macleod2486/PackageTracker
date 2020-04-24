@@ -26,7 +26,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -41,6 +41,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class USPSApi
 {
+    private FirebaseCrashlytics crashlytics;
+
     private String userID;
     private String APIUrl;
     private Context context;
@@ -54,6 +56,7 @@ public class USPSApi
         this.userID = userID;
         this.context = context;
         this.manager = new USPSManager(context,"USPS",null, 1);
+        crashlytics = FirebaseCrashlytics.getInstance();
     }
 
     public Document getTrackingInfo(String trackingID)
@@ -93,7 +96,7 @@ public class USPSApi
         catch (Exception e)
         {
             Log.i("USPSAPIError", e.getMessage());
-            Crashlytics.logException(e);
+            crashlytics.log(e.toString());
         }
 
         return doc;
@@ -153,7 +156,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSApiError",e.getMessage());
-            Crashlytics.logException(e);
+            crashlytics.log(e.toString());
             completed = false;
         }
 
@@ -162,6 +165,7 @@ public class USPSApi
 
     public void updateHistory(String trackingNumber)
     {
+
         Document result = getTrackingInfo(trackingNumber);
 
         try
@@ -240,7 +244,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
-            Crashlytics.logException(e);
+            crashlytics.log(e.toString());
         }
     }
 
@@ -317,7 +321,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
-            Crashlytics.logException(e);
+            crashlytics.log(e.toString());
         }
 
     }
