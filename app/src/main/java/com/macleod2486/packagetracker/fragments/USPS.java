@@ -66,7 +66,7 @@ public class USPS extends Fragment
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS);
         addUSPSTracking.setOnClickListener((View v) ->
         {
-            trackingIDs = text.getText().toString();
+            trackingIDs = text.getText().toString().replaceAll("\\s","");
             new InitalizeEntry().execute();
         });
 
