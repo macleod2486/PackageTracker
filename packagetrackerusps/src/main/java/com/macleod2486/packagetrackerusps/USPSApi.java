@@ -96,7 +96,7 @@ public class USPSApi
         catch (Exception e)
         {
             Log.i("USPSAPIError", e.getMessage());
-            crashlytics.log(e.toString());
+            crashlytics.recordException(e);
         }
 
         return doc;
@@ -156,7 +156,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSApiError",e.getMessage());
-            crashlytics.log(e.toString());
+            crashlytics.recordException(e);
             completed = false;
         }
 
@@ -244,7 +244,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
-            crashlytics.log(e.toString());
+            crashlytics.recordException(e);
         }
     }
 
@@ -321,7 +321,7 @@ public class USPSApi
         {
             e.printStackTrace();
             Log.e("USPSAPI",e.getMessage());
-            crashlytics.log(e.toString());
+            crashlytics.recordException(e);
         }
 
     }
