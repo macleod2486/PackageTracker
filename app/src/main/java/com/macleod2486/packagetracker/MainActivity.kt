@@ -48,12 +48,11 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        val manager = WorkManager.getInstance()
         Log.i("MainActivity", "Starting scheduled process")
-        var minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
+        val manager = WorkManager.getInstance()
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val multiplier = preferences.getString("freq", "1")
-        minutes = minutes * multiplier!!.toInt()
+        val minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS * multiplier!!.toInt()
         val scheduledWorkRequestBuild = PeriodicWorkRequest.Builder(TrackingUpdater::class.java, minutes, TimeUnit.MILLISECONDS)
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater")
         val scheduledWorkRequest = scheduledWorkRequestBuild.build()
@@ -62,12 +61,11 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStop() {
         super.onStop()
-        val manager = WorkManager.getInstance()
         Log.i("MainActivity", "Starting scheduled process")
-        var minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
+        val manager = WorkManager.getInstance()
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val multiplier = preferences.getString("freq", "1")
-        minutes = minutes * multiplier!!.toInt()
+        val minutes = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS * multiplier!!.toInt()
         val scheduledWorkRequestBuild = PeriodicWorkRequest.Builder(TrackingUpdater::class.java, minutes, TimeUnit.MILLISECONDS)
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater")
         val scheduledWorkRequest = scheduledWorkRequestBuild.build()
