@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         manager = supportFragmentManager
         supportActionBar!!.setTitle(R.string.app_name)
-        PackageTrackerApplication.navHost = manager!!.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        PackageTrackerApplication.navHost = manager!!.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         PackageTrackerApplication.navController = PackageTrackerApplication.navHost.navController
     }
 

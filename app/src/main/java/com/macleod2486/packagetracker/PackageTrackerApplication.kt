@@ -19,17 +19,15 @@
  *    along with this program.  If not, see [http://www.gnu.org/licenses/].
  *
  */
+package com.macleod2486.packagetracker
 
-package com.macleod2486.packagetracker;
+import android.app.Application
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 
-import android.app.Application;
-
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
-public class PackageTrackerApplication extends Application
-{
-    public static NavHostFragment navHost;
-    public static NavController navController;
-
+class PackageTrackerApplication : Application (){
+    companion object {
+        lateinit var navHost: NavHostFragment
+        lateinit var navController: NavController
+    }
 }
