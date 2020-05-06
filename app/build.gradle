@@ -5,11 +5,11 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 28
     defaultConfig {
         applicationId 'com.macleod2486.packagetracker'
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
+        compileSdkVersion 28
         versionCode 3
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
