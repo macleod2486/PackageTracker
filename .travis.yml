@@ -6,6 +6,7 @@ android:
                 - build-tools-28.0.3
                 - android-29
                 - extra
+                - sys-img-x86-android-29
 rvm:
  - 2.2
  - jruby
