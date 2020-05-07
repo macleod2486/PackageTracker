@@ -21,6 +21,7 @@
  */
 package com.macleod2486.packagetracker.fragments
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.macleod2486.packagetracker.PackageTrackerApplication
 import com.macleod2486.packagetracker.R
@@ -42,8 +44,8 @@ class USPSDetail : Fragment() {
             val toolbar: Toolbar = uspsDetailView.findViewById(R.id.uspsdetailstoolbar)
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
             toolbar.title = trackingNumber
-            toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
-            toolbar.setNavigationOnClickListener { view: View? -> PackageTrackerApplication.navController.popBackStack() }
+            toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+            toolbar.setNavigationOnClickListener { PackageTrackerApplication.navController.popBackStack() }
             val manager = USPSManager(context, "USPS", null, 1)
             val historyList = manager.getHistoryForDisplay(trackingNumber)
             manager.close()
