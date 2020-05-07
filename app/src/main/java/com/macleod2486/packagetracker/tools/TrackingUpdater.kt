@@ -21,7 +21,6 @@
  */
 package com.macleod2486.packagetracker.tools
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -29,6 +28,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -50,7 +50,7 @@ class TrackingUpdater(context: Context, params: WorkerParameters) : Worker(conte
             for (trackingNumber in trackingNumbers) {
                 val entryDetails = newEntries[trackingNumber]
                 if (entryDetails != null && entryDetails.size > 0) {
-                    val style = Notification.InboxStyle()
+                    val style = NotificationCompat.InboxStyle()
                     for (entryDetail in entryDetails) {
                         Log.i("TrackingUpdater", entryDetail.split(",").toTypedArray()[3])
                         style.addLine(entryDetail.split(",").toTypedArray()[3])
@@ -65,7 +65,7 @@ class TrackingUpdater(context: Context, params: WorkerParameters) : Worker(conte
                         val channel_id = TrackingUpdater::class.java.toString()
                         val channel = NotificationChannel(channel_id, name, importance)
                         notificationManager.createNotificationChannel(channel)
-                        val notification = Notification.Builder(applicationContext, channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
+                        val notification = NotificationCompat.Builder(applicationContext, channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
                                 .setContentTitle(trackingNumber)
                                 .setStyle(style)
                                 .setAutoCancel(true)
@@ -73,8 +73,9 @@ class TrackingUpdater(context: Context, params: WorkerParameters) : Worker(conte
                                 .build()
                         notificationManager.notify(channel_id, 0, notification)
                     } else {
+                        val channel_id = TrackingUpdater::class.java.toString()
                         val notificationManager = NotificationManagerCompat.from(applicationContext)
-                        val notification = Notification.Builder(applicationContext).setSmallIcon(R.mipmap.ic_launcher_round)
+                        val notification = NotificationCompat.Builder(applicationContext, channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
                                 .setContentTitle(trackingNumber)
                                 .setStyle(style)
                                 .setAutoCancel(true)
