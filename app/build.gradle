@@ -9,7 +9,7 @@ android {
         applicationId 'com.macleod2486.packagetracker'
         minSdkVersion 21
         targetSdkVersion 29
-        compileSdkVersion = 28
+        compileSdkVersion = 29
         versionCode 3
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
