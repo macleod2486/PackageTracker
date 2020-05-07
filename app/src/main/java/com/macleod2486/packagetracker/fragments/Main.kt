@@ -54,18 +54,18 @@ class Main : Fragment() {
         val entryList = main.findViewById<ListView>(R.id.entries)
         val arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, entries)
         entryList.adapter = arrayAdapter
-        entryList.onItemClickListener = OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+        entryList.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val bundle = Bundle()
                 bundle.putString("trackingnumber", entries.get(position))
                 PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail, bundle)
             }
         }
-        entryList.onItemLongClickListener = OnItemLongClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+        entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val alertBuilder = AlertDialog.Builder(activity)
                 alertBuilder.setMessage("Delete " + entries.get(position))
-                alertBuilder.setPositiveButton("Yes") { dialog: DialogInterface?, which: Int ->
+                alertBuilder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
                     val tempManager = USPSManager(context, "USPS", null, 1)
                     tempManager.deleteEntryAndHistory(entries.get(position))
                     val tempEntries = tempManager.entries
@@ -76,7 +76,7 @@ class Main : Fragment() {
                     entryList.adapter = tempAdapter
                     tempManager.close()
                 }
-                alertBuilder.setNegativeButton("No") { dialog: DialogInterface?, which: Int -> }
+                alertBuilder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
                 val dialog = alertBuilder.create()
                 dialog.show()
             }
