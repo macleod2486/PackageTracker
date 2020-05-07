@@ -106,7 +106,7 @@ class USPS : Fragment()
                     val result = apiTool.getTrackingInfo(id)
                     apiTool.trackingNumber = id
                     apiTool.storeInitial(result)
-                    apiTool.initialHistory(id)
+                    apiTool.initialHistory(id, activity)
                 }
                 apiTool.closeDatabase()
                 return null

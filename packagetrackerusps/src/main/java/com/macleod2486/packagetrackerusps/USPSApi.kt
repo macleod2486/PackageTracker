@@ -24,6 +24,8 @@ package com.macleod2486.packagetrackerusps
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.w3c.dom.Document
 import org.w3c.dom.NodeList
@@ -138,7 +140,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
 
             //Check and update history
             val completeHistory = getHistory(trackingNumber)
-            var completeEntry = ""
+            lateinit var completeEntry: String
             val trackDetail = result!!.getElementsByTagName("TrackDetail")
 
             //Add the details first
@@ -182,7 +184,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
         }
     }
 
-    fun initialHistory(trackingNumber: String) {
+    fun initialHistory(trackingNumber: String, activity: FragmentActivity) {
 
         //Reuse get tracking info for doc.
         val result = getTrackingInfo(trackingNumber)
@@ -202,10 +204,25 @@ class USPSApi(private val userID: String, private val context: Context?) {
             var zipcode: String
             var country: String
 
+            val errors = result!!.getElementsByTagName("Error")
+            if(errors.length > 0)
+            {
+                val errorNodes = errors.item(0).childNodes
+                val errorDescription = errorNodes.item(1).textContent
+
+                activity.run {
+
+                    runOnUiThread{
+                        Toast.makeText(context, errorDescription, Toast.LENGTH_LONG).show()
+                    }
+                }
+                throw Exception(errorDescription)
+            }
+
             //Check and update history
             val completeHistory = getHistory(trackingNumber)
-            var completeEntry = ""
-            val trackDetail = result!!.getElementsByTagName("TrackDetail")
+            lateinit var completeEntry: String
+            val trackDetail = result.getElementsByTagName("TrackDetail")
 
             //Add the rest of the entire history
             for (index in trackDetail.length - 1 downTo 0) {
