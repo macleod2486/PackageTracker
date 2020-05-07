@@ -42,7 +42,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         Log.i("USPSManager", "Upgrade called")
     }
 
-    fun addEntry(trackingNumber: String?, date: String?, time: String?, historyInfo: String?, city: String?, state: String?, zipcode: String?, country: String?, seen: Int) {
+    fun addEntry(trackingNumber: String?) {
         val insert = ContentValues()
         insert.put("trackingnumber", trackingNumber)
         db.insert("TrackingNumbers", null, insert)

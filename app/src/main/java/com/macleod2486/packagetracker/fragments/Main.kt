@@ -46,7 +46,7 @@ class Main : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         main = inflater.inflate(R.layout.content_main, container, false)
         val add = main.findViewById<Button>(R.id.add)
-        add.setOnClickListener { view: View? -> PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPS2) }
+        add.setOnClickListener { PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPS2) }
         val manager = USPSManager(context, "USPS", null, 1)
         entries = manager.entries
         manager.close()

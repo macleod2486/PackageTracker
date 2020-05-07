@@ -104,7 +104,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
                     zipcode = summaryNodes.item(5).textContent
                     country = summaryNodes.item(6).textContent
                     Log.i("USPSApi", trackingNumber + "," + date + "," + time + "," + description + "," + city + "," + state + "," + zipcode + "," + country)
-                    manager.addEntry(trackingNumber, date, time, description, city, state, zipcode, country, 0)
+                    manager.addEntry(trackingNumber)
                 }
             }
             completed = true
