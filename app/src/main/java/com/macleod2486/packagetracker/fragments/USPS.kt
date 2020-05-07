@@ -32,6 +32,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.macleod2486.packagetracker.R
@@ -48,12 +49,12 @@ class USPS : Fragment()
         val toolbar: Toolbar = uspsView.findViewById(R.id.uspstoolbar)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
         toolbar.title = "Add tracking numbers"
-        toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
-        toolbar.setNavigationOnClickListener { view: View? -> requireActivity().supportFragmentManager.popBackStack() }
+        toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+        toolbar.setNavigationOnClickListener { requireActivity().supportFragmentManager.popBackStack() }
         val text = uspsView.findViewById<EditText>(R.id.trackingEntry)
 
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS)
-        addUSPSTracking.setOnClickListener(View.OnClickListener { v: View? ->
+        addUSPSTracking.setOnClickListener(View.OnClickListener { _ : View? ->
             trackingIDs = text.text.toString().replace("\\s".toRegex(), "")
             val initalize = InitalizeEntry()
             initalize.setActivity(requireActivity())
@@ -99,7 +100,7 @@ class USPS : Fragment()
 
             override fun doInBackground(vararg params: Void?): Void? {
                 activity.runOnUiThread { progress.visibility = View.VISIBLE }
-                val userId = activity!!.resources.getString(R.string.USPSApiUserID)
+                val userId = activity.resources.getString(R.string.USPSApiUserID)
                 val apiTool = USPSApi(userId, context)
                 val ids = trackingIDs.split(",").toTypedArray()
                 for (id in ids) {
@@ -113,7 +114,7 @@ class USPS : Fragment()
             }
 
             override fun onPostExecute(result: Void?) {
-                activity.runOnUiThread { progress!!.visibility = View.INVISIBLE }
+                activity.runOnUiThread { progress.visibility = View.INVISIBLE }
                 val manager = activity.supportFragmentManager
                 manager.popBackStack()
             }
