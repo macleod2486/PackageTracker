@@ -53,7 +53,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
                 .appendQueryParameter("API", "TrackV2")
                 .appendQueryParameter("XML", xml)
                 .build().toString()
-        Log.i("USPSApi", APIUrl)
+        Log.i("USPSApi", APIUrl!!)
         val connection: HttpURLConnection
         try {
             val url = URL(APIUrl)
@@ -65,7 +65,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             doc = builder.parse(connection.inputStream)
             connection.disconnect()
         } catch (e: Exception) {
-            Log.i("USPSAPIError", e.message)
+            Log.i("USPSAPIError", e.message!!)
             crashlytics.recordException(e)
         }
         return doc
@@ -110,7 +110,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             completed = true
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("USPSApiError", e.message)
+            Log.e("USPSApiError", e.message!!)
             crashlytics.recordException(e)
             completed = false
         }
@@ -179,7 +179,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             newEntries!![trackingNumber] = entries
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("USPSAPI", e.message)
+            Log.e("USPSAPI", e.message!!)
             crashlytics.recordException(e)
         }
     }
@@ -253,7 +253,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             if (!completeHistory.contains(completeEntry)) manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 1)
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("USPSAPI", e.message)
+            Log.e("USPSAPI", e.message!!)
             crashlytics.recordException(e)
         }
     }
