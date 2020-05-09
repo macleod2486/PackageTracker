@@ -64,7 +64,7 @@ class TrackingUpdater(context: Context, params: WorkerParameters) : Worker(conte
                         val importance = NotificationManager.IMPORTANCE_DEFAULT
                         val channel_id = TrackingUpdater::class.java.toString()
                         val channel = NotificationChannel(channel_id, name, importance)
-                        notificationManager.createNotificationChannel(channel)
+                        notificationManager!!.createNotificationChannel(channel)
                         val notification = NotificationCompat.Builder(applicationContext, channel_id).setSmallIcon(R.mipmap.ic_launcher_round)
                                 .setContentTitle(trackingNumber)
                                 .setStyle(style)
