@@ -28,7 +28,7 @@ import androidx.preference.PreferenceFragmentCompat
 
 class Settings : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
     private var frequency: ListPreference? = null
-    override fun onCreatePreferences(bundle: Bundle, rootKey: String) {
+    override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
         frequency = findPreference("freq")
         frequency!!.onPreferenceChangeListener = this
