@@ -1,11 +1,5 @@
 language: android
 
-before_script:
-  - echo no | android create avd --force -n test -t android-29 --abi x86 -c 100M
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-
 android:
 
   # Emulator Management: Create, Start and Wait
@@ -15,6 +9,7 @@ android:
                 - build-tools-28.0.3
                 - android-29
                 - extra
+                - sys-img-x86-android-26
 rvm:
  - 2.2
  - jruby
