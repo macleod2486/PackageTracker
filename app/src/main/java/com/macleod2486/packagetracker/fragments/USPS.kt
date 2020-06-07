@@ -21,7 +21,6 @@
  */
 package com.macleod2486.packagetracker.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
@@ -35,6 +34,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.macleod2486.packagetracker.PackageTrackerApplication
 import com.macleod2486.packagetracker.R
 import com.macleod2486.packagetrackerusps.USPSApi
 
@@ -50,7 +50,7 @@ class USPS : Fragment()
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
         toolbar.title = "Add tracking numbers"
         toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
-        toolbar.setNavigationOnClickListener { requireActivity().supportFragmentManager.popBackStack() }
+        toolbar.setNavigationOnClickListener { PackageTrackerApplication.navController.popBackStack() }
         val text = uspsView.findViewById<EditText>(R.id.trackingEntry)
 
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS)
@@ -115,8 +115,7 @@ class USPS : Fragment()
 
             override fun onPostExecute(result: Void?) {
                 activity.runOnUiThread { progress.visibility = View.INVISIBLE }
-                val manager = activity.supportFragmentManager
-                manager.popBackStack()
+                PackageTrackerApplication.navController.popBackStack()
             }
         }
     }

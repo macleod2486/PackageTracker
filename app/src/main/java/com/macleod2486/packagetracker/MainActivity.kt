@@ -77,6 +77,12 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onBackPressed() {
+        val stackPopped = PackageTrackerApplication.navController.popBackStack()
+        if(!stackPopped)
+            super.onBackPressed()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (PackageTrackerApplication.navController.currentDestination!!.id != R.id.settings) PackageTrackerApplication.navController.navigate(R.id.action_main2_to_settings)
         return true
