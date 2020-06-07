@@ -3,10 +3,7 @@ language: android
 before_script:
   - android list avd
   - android list target
-  - android list sdk
-  - export USE_SDK_WRAPPER=y
-  - android update sdk
-  - echo no | android create avd --force -n test -t android-25 --abi x86 -c 100M
+  - echo no | android create avd --force -n test -t android-29 --abi x86 -c 100M
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
@@ -20,6 +17,7 @@ android:
                 - build-tools-28.0.3
                 - android-29
                 - extra
+                - sys-img-armeabi-v7a-android-29
 rvm:
  - 2.2
  - jruby
