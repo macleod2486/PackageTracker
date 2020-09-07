@@ -57,6 +57,7 @@ class TrackingUpdater(context: Context, params: WorkerParameters) : Worker(conte
                     }
                     val mainIntent = Intent(applicationContext, MainActivity::class.java)
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    mainIntent.putExtra("trackingnumber", trackingNumber)
                     val mainPending = PendingIntent.getActivity(applicationContext, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         val notificationManager = applicationContext.getSystemService(NotificationManager::class.java)

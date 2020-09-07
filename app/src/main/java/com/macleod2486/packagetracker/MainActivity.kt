@@ -37,7 +37,11 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     var manager: FragmentManager? = null
+    var trackingNumber: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
+        val receivedData = intent
+        trackingNumber = receivedData.getStringExtra("trackingnumber")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         manager = supportFragmentManager
@@ -57,6 +61,12 @@ class MainActivity : AppCompatActivity() {
         scheduledWorkRequestBuild.addTag("PackageTrackerUpdater")
         val scheduledWorkRequest = scheduledWorkRequestBuild.build()
         manager.enqueueUniquePeriodicWork("PackageTrackerUpdater", ExistingPeriodicWorkPolicy.KEEP, scheduledWorkRequest)
+        if(trackingNumber != null)
+        {
+            val bundle = Bundle()
+            bundle.putString("trackingnumber", trackingNumber)
+            PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail, bundle)
+        }
     }
 
     public override fun onStop() {
