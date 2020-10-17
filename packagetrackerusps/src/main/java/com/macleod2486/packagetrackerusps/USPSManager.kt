@@ -108,7 +108,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     }
 
     fun getHistoryForDisplay(trackingNumber: String?): ArrayList<String> {
-        val cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, "id DESC")
+        val cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, "date DESC, time")
         cursor.moveToFirst()
         val history = ArrayList<String>()
         if (cursor.count > 0) {
