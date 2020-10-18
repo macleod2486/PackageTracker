@@ -13,3 +13,5 @@ PackageTracker
 	- DHS
 
 [![Build Status](https://travis-ci.org/macleod2486/PackageTracker.svg?branch=master)](https://travis-ci.org/macleod2486/PackageTracker)
+
+[![Actions Status](https://github.com/{macleod2486}/{PackageTracker}/workflows/{build}/badge.svg)](https://github.com/{macleod2486}/{PackageTracker}/actions)
