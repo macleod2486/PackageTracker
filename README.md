@@ -12,6 +12,4 @@ PackageTracker
 	- FedEx
 	- DHS
 
-[![Build Status](https://travis-ci.org/macleod2486/PackageTracker.svg?branch=master)](https://travis-ci.org/macleod2486/PackageTracker)
-
 ![badge](https://action-badges.now.sh/macleod2486/PackageTracker)
