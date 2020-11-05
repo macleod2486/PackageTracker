@@ -30,6 +30,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -56,12 +57,19 @@ class USPS : Fragment()
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS)
         addUSPSTracking.setOnClickListener(View.OnClickListener { _ : View? ->
             trackingIDs = text.text.toString().replace("\\s".toRegex(), "")
-            val initalize = InitalizeEntry()
-            initalize.setActivity(requireActivity())
-            initalize.setContext(requireContext())
-            initalize.setProgressBar(progress)
-            initalize.setTrackingId(trackingIDs)
-            initalize.execute()
+            if(trackingIDs.isNotBlank() && trackingIDs.isNotEmpty())
+            {
+                val initalize = InitalizeEntry()
+                initalize.setActivity(requireActivity())
+                initalize.setContext(requireContext())
+                initalize.setProgressBar(progress)
+                initalize.setTrackingId(trackingIDs)
+                initalize.execute()
+            }
+            else
+            {
+                Toast.makeText(requireContext(), "Can't be blank", Toast.LENGTH_LONG).show();
+            }
         })
 
         progress = uspsView.findViewById(R.id.uspsAddProgress)
