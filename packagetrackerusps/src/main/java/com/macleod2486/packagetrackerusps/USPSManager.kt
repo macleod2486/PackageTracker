@@ -160,4 +160,41 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         db = this.writableDatabase
         Log.i("USPSManager", "Initializer called.")
     }
+
+    fun convertFromMilitaryTime(time: String) : String
+    {
+        var conversion = ""
+
+        if(time.isNotBlank())
+        {
+            var shift = 0
+            var hours = Integer.parseInt(time.substring(0, time.length - 2))
+            if(hours > 12) shift = 12
+            hours -= shift;
+            val minutes = time.substring(time.length - 2)
+
+            conversion = hours.toString()+":"+minutes
+
+            if(shift == 0) conversion += " am"
+            else conversion += " pm"
+        }
+
+        return conversion
+    }
+
+    fun convertToMilitaryTime(time: String) : String
+    {
+        var conversion = ""
+
+        if(time.isNotBlank())
+        {
+            var shift = 0
+            if(time.toLowerCase(Locale.getDefault()).contains("pm")) shift = 12
+            val split = time.split(":")
+            val hours = Integer.parseInt(split[0]) + shift
+            conversion = hours.toString() + split[1].substring(0, 2)
+        }
+
+        return conversion
+    }
 }
