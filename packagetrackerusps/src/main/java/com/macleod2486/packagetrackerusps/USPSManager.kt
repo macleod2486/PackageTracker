@@ -126,30 +126,29 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
                 //Format display.
                 if (!date.isEmpty()) historyString += date
                 if (!time.isEmpty()) historyString += """
-
-     $time
-     """.trimIndent()
-                if (!historyinfo.isEmpty()) historyString += """
-
-     $historyinfo
-     """.trimIndent()
-                if (!city.isEmpty()) historyString += """
-
-     $city
-     """.trimIndent()
-                if (!state.isEmpty()) historyString += """
-
-     $state
-     """.trimIndent()
-                if (!zipcode.isEmpty()) historyString += """
-
-     $zipcode
-     """.trimIndent()
-                if (!country.isEmpty()) historyString += """
-
-     $country
-     """.trimIndent()
-                history.add(historyString)
+                 $time
+                 """.trimIndent()
+                            if (!historyinfo.isEmpty()) historyString += """
+            
+                 $historyinfo
+                 """.trimIndent()
+                            if (!city.isEmpty()) historyString += """
+            
+                 $city
+                 """.trimIndent()
+                            if (!state.isEmpty()) historyString += """
+            
+                 $state
+                 """.trimIndent()
+                            if (!zipcode.isEmpty()) historyString += """
+            
+                 $zipcode
+                 """.trimIndent()
+                            if (!country.isEmpty()) historyString += """
+            
+                 $country
+                 """.trimIndent()
+                            history.add(historyString)
             } while (cursor.moveToNext())
         }
         cursor.close()
