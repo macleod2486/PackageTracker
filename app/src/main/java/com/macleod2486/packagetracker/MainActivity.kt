@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val receivedData = intent
         trackingNumber = receivedData.getStringExtra("trackingnumber")
+        receivedData.removeExtra("trackingnumber")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
