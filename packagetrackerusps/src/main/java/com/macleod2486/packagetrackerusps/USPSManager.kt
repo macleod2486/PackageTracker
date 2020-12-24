@@ -40,6 +40,22 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.i("USPSManager", "Upgrade called")
+
+        val convert = db.query("History", null, "", null, null, null, null);
+        convert.moveToFirst()
+        do {
+
+            val id = convert.getString(convert.getColumnIndex("id"))
+            val time = convert.getString(convert.getColumnIndex("time"))
+            val convertTo = convertToMilitaryTime(time)
+
+            val dataUpdate = ContentValues()
+            dataUpdate.put("time", convertTo)
+
+            db.update("History", dataUpdate, "id=?", arrayOf(id))
+
+        }while(convert.moveToNext())
+        convert.close()
     }
 
     fun addEntry(trackingNumber: String?) {
@@ -58,7 +74,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         insert.put("trackingnumber", trackingNumber)
         insert.put("date", date)
         insert.put("historyinfo", historyInfo)
-        insert.put("time", time)
+        insert.put("time", convertToMilitaryTime(time))
         insert.put("city", city)
         insert.put("state", state)
         insert.put("zipcode", zipcode)
@@ -83,6 +99,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
                     entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")))
                 } while (cursor.moveToNext())
             }
+            cursor.close()
             return entries
         }
 
@@ -93,7 +110,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         if (cursor.count > 0) {
             do {
                 val date = cursor.getString(cursor.getColumnIndex("date"))
-                val time = cursor.getString(cursor.getColumnIndex("time"))
+                val time = convertFromMilitaryTime(cursor.getString(cursor.getColumnIndex("time")))
                 val historyinfo = cursor.getString(cursor.getColumnIndex("historyInfo"))
                 val city = cursor.getString(cursor.getColumnIndex("city"))
                 val state = cursor.getString(cursor.getColumnIndex("state"))
@@ -114,7 +131,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         if (cursor.count > 0) {
             do {
                 val date = cursor.getString(cursor.getColumnIndex("date"))
-                val time = cursor.getString(cursor.getColumnIndex("time"))
+                val time = convertFromMilitaryTime(cursor.getString(cursor.getColumnIndex("time")))
                 val historyinfo = cursor.getString(cursor.getColumnIndex("historyInfo"))
                 val city = cursor.getString(cursor.getColumnIndex("city"))
                 val state = cursor.getString(cursor.getColumnIndex("state"))
@@ -126,8 +143,8 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
                 //Format display.
                 if (!date.isEmpty()) historyString += date
                 if (!time.isEmpty()) historyString += """
-                 $time
-                 """.trimIndent()
+                $time
+                 """.replaceIndent("\n")
                             if (!historyinfo.isEmpty()) historyString += """
             
                  $historyinfo
@@ -164,7 +181,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     {
         var conversion = ""
 
-        if(time.isNotBlank())
+        if(time.isNotBlank() && (!time.contains("am") || !time.contains("pm")))
         {
             var shift = 0
             var hours = Integer.parseInt(time.substring(0, time.length - 2))
@@ -181,11 +198,11 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         return conversion
     }
 
-    fun convertToMilitaryTime(time: String) : String
+    fun convertToMilitaryTime(time: String?) : String
     {
         var conversion = ""
 
-        if(time.isNotBlank())
+        if(!time.isNullOrBlank() && (time.contains("am") || time.contains("pm")))
         {
             var shift = 0
             if(time.toLowerCase(Locale.getDefault()).contains("pm")) shift = 12
