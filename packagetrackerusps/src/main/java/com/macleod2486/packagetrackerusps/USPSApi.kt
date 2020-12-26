@@ -35,6 +35,7 @@ import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 
 class USPSApi(private val userID: String, private val context: Context?) {
+    private val databaseVersion = 2
     private val crashlytics: FirebaseCrashlytics
     private var APIUrl: String? = null
     var trackingNumber: String? = null
@@ -153,6 +154,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
                 state = trackNodes.item(4).textContent
                 zipcode = trackNodes.item(5).textContent
                 country = trackNodes.item(6).textContent
+                time = time.trimIndent()
                 completeEntry = "$date,$time,$description,$city,$state,$zipcode,$country"
                 Log.i("USPSApi", completeEntry)
                 if (!completeHistory.contains(completeEntry)) {
@@ -171,6 +173,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             state = summaryNodes.item(4).textContent
             zipcode = summaryNodes.item(5).textContent
             country = summaryNodes.item(6).textContent
+            time = time.trimIndent()
             completeEntry = "$date,$time,$description,$city,$state,$zipcode,$country"
             if (!completeHistory.contains(completeEntry)) {
                 entries.add(completeEntry)
@@ -250,6 +253,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             zipcode = summaryNodes.item(5).textContent
             country = summaryNodes.item(6).textContent
             completeEntry = "$date,$time,$description,$city,$state,$zipcode,$country"
+            time = time.trimIndent()
             if (!completeHistory.contains(completeEntry)) manager.addHistory(trackingNumber, date, time, description, city, state, zipcode, country, 1)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -270,7 +274,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
     }
 
     init {
-        manager = USPSManager(context, "USPS", null, 1)
+        manager = USPSManager(context, "USPS", null, databaseVersion)
         crashlytics = FirebaseCrashlytics.getInstance()
     }
 }

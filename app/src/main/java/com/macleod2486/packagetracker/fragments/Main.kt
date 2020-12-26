@@ -47,7 +47,7 @@ class Main : Fragment() {
         main = inflater.inflate(R.layout.content_main, container, false)
         val add = main.findViewById<Button>(R.id.add)
         add.setOnClickListener { PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPS2) }
-        val manager = USPSManager(context, "USPS", null, 1)
+        val manager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
         entries = manager.entries
         manager.close()
         if (entries.size == 0) entries.add("No current entries")
@@ -66,7 +66,7 @@ class Main : Fragment() {
                 val alertBuilder = AlertDialog.Builder(activity)
                 alertBuilder.setMessage("Delete " + entries.get(position))
                 alertBuilder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
-                    val tempManager = USPSManager(context, "USPS", null, 1)
+                    val tempManager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
                     tempManager.deleteEntryAndHistory(entries.get(position))
                     val tempEntries = tempManager.entries
                     if (tempEntries.size == 0) tempEntries.add("No current entries")
