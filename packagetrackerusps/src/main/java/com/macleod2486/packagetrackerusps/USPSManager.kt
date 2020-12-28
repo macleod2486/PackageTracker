@@ -177,7 +177,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         Log.i("USPSManager", "Initializer called.")
     }
 
-    fun convertFromMilitaryTime(time: String) : String
+    private fun convertFromMilitaryTime(time: String) : String
     {
         var conversion = ""
 
@@ -198,7 +198,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         return conversion
     }
 
-    fun convertToMilitaryTime(time: String?) : String
+    private fun convertToMilitaryTime(time: String?) : String
     {
         var conversion = ""
 
