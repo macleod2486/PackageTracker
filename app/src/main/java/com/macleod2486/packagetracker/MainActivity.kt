@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putString("trackingnumber", trackingNumber)
             PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail, bundle)
+            trackingNumber = null
         }
     }
 
