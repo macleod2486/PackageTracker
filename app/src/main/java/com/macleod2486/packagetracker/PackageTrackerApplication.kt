@@ -29,6 +29,6 @@ class PackageTrackerApplication : Application (){
     companion object {
         lateinit var navHost: NavHostFragment
         lateinit var navController: NavController
-        const val databaseVersion = 2
+        const val databaseVersion = 3
     }
 }

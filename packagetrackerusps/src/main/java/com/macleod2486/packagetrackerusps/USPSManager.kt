@@ -34,28 +34,36 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     private val db: SQLiteDatabase
     override fun onCreate(db: SQLiteDatabase) {
         Log.i("USPSManager", "On create called")
-        db.execSQL("Create table if not exists TrackingNumbers (trackingnumber TEXT)")
+        db.execSQL("Create table if not exists TrackingNumbers (trackingnumber TEXT, nick TEXT)")
         db.execSQL("Create table if not exists History (id INTEGER not null, trackingnumber TEXT, historyInfo TEXT, date TEXT, time TEXT, city TEXT, state TEXT, zipcode TEXT, country TEXT, seen INTEGER)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.i("USPSManager", "Upgrade called")
 
-        val convert = db.query("History", null, "", null, null, null, null);
-        convert.moveToFirst()
-        do {
+        if(newVersion == 3)
+        {
+            val convert = db.query("History", null, "", null, null, null, null);
+            convert.moveToFirst()
+            do {
 
-            val id = convert.getString(convert.getColumnIndex("id"))
-            val time = convert.getString(convert.getColumnIndex("time"))
-            val convertTo = convertToMilitaryTime(time)
+                val id = convert.getString(convert.getColumnIndex("id"))
+                val time = convert.getString(convert.getColumnIndex("time"))
+                val convertTo = convertToMilitaryTime(time)
 
-            val dataUpdate = ContentValues()
-            dataUpdate.put("time", convertTo)
+                val dataUpdate = ContentValues()
+                dataUpdate.put("time", convertTo)
 
-            db.update("History", dataUpdate, "id=?", arrayOf(id))
+                db.update("History", dataUpdate, "id=?", arrayOf(id))
 
-        }while(convert.moveToNext())
-        convert.close()
+            }while(convert.moveToNext())
+            convert.close()
+        }
+
+        if(newVersion >= 3)
+        {
+            db.execSQL("ALTER TABLE TrackingNumbers ADD COLUMN nick TEXT;")
+        }
     }
 
     fun addEntry(trackingNumber: String?) {
@@ -96,7 +104,10 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
             cursor.moveToFirst()
             if (cursor.count > 0) {
                 do {
-                    entries.add(cursor.getString(cursor.getColumnIndex("trackingnumber")))
+                    val trackingNumber = cursor.getString(cursor.getColumnIndex("trackingnumber"))
+                    val nickName = cursor.getString(cursor.getColumnIndex("nick"))
+                    val entry = if(!nickName.isNullOrBlank()) nickName else trackingNumber
+                    entries.add(entry)
                 } while (cursor.moveToNext())
             }
             cursor.close()
@@ -170,6 +181,13 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         }
         cursor.close()
         return history
+    }
+
+    fun addNick(trackingNumber: String, nick: String)
+    {
+        val nickValue = ContentValues()
+        nickValue.put("nick", nick)
+        db.update("TrackingNumbers",  nickValue, "trackingnumber = ?", arrayOf(trackingNumber))
     }
 
     init {

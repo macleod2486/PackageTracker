@@ -24,15 +24,13 @@ package com.macleod2486.packagetracker.fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.macleod2486.packagetracker.PackageTrackerApplication
 import com.macleod2486.packagetracker.R
@@ -44,6 +42,7 @@ class Main : Fragment() {
     lateinit var entries: ArrayList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val tempManager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
         main = inflater.inflate(R.layout.content_main, container, false)
         val add = main.findViewById<Button>(R.id.add)
         add.setOnClickListener { PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPS2) }
@@ -64,10 +63,9 @@ class Main : Fragment() {
         entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val alertBuilder = AlertDialog.Builder(activity)
-                alertBuilder.setMessage("Delete " + entries.get(position))
+                alertBuilder.setMessage("Delete ${entries.get(position)} ?")
                 alertBuilder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
-                    val tempManager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
-                    tempManager.deleteEntryAndHistory(entries.get(position))
+                    tempManager.deleteEntryAndHistory(entries[position])
                     val tempEntries = tempManager.entries
                     if (tempEntries.size == 0) tempEntries.add("No current entries")
                     entries = tempEntries
@@ -75,6 +73,23 @@ class Main : Fragment() {
                     val tempAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, tempEntries)
                     entryList.adapter = tempAdapter
                     tempManager.close()
+                }
+                alertBuilder.setNeutralButton("Edit") { _: DialogInterface?, _: Int ->
+                    val inputView = EditText(context)
+                    inputView.inputType = InputType.TYPE_CLASS_TEXT
+
+                    val editAlertBuilder = AlertDialog.Builder(activity)
+                    editAlertBuilder.setView(inputView)
+                    editAlertBuilder.setTitle("Nickname for tracking number")
+                    editAlertBuilder.setPositiveButton("Ok") {_: DialogInterface?, _: Int ->
+                        tempManager.addNick(nick = inputView.text.toString(), trackingNumber = entries[position])
+
+                    }
+                    editAlertBuilder.setNegativeButton("Cancel") {_: DialogInterface?, _: Int ->
+
+                    }
+                    val editDialog = editAlertBuilder.create()
+                    editDialog.show()
                 }
                 alertBuilder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
                 val dialog = alertBuilder.create()
