@@ -115,7 +115,13 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         }
 
     fun getHistory(trackingNumber: String?): ArrayList<String> {
-        val cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, null)
+        var cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, null)
+
+        if(cursor.count == 0)
+        {
+            val trueTrackingNumber = getTrackingNumber(trackingNumber)
+            cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trueTrackingNumber), null, null, null)
+        }
         cursor.moveToFirst()
         val history = ArrayList<String>()
         if (cursor.count > 0) {
@@ -136,7 +142,12 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     }
 
     fun getHistoryForDisplay(trackingNumber: String?): ArrayList<String> {
-        val cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, "date DESC, time DESC")
+        var cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, "date DESC, time DESC")
+        if(cursor.count == 0)
+        {
+            val trueTrackingNumber = getTrackingNumber(trackingNumber)
+            cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trueTrackingNumber), null, null, "date DESC, time DESC")
+        }
         cursor.moveToFirst()
         val history = ArrayList<String>()
         if (cursor.count > 0) {
@@ -230,5 +241,14 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         }
 
         return conversion
+    }
+
+    private fun getTrackingNumber(nickname: String?): String
+    {
+        val number = db.query("TrackingNumbers", null, "nick = ?", arrayOf(nickname), null, null, null)
+        number.moveToFirst()
+        val trackingNumber = number.getString(number.getColumnIndex("trackingnumber"))
+        number.close()
+        return trackingNumber
     }
 }
