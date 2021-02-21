@@ -23,7 +23,6 @@ package com.macleod2486.packagetrackerusps
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
 import android.database.sqlite.SQLiteOpenHelper
@@ -40,7 +39,6 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.i("USPSManager", "Upgrade called")
-
         if(newVersion == 3)
         {
             val convert = db.query("History", null, "", null, null, null, null);
@@ -73,8 +71,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     }
 
     fun addHistory(trackingNumber: String?, date: String?, time: String?, historyInfo: String?, city: String?, state: String?, zipcode: String?, country: String?, seen: Int) {
-        val cursor: Cursor
-        cursor = db.rawQuery("select max(id) from History", null)
+        val cursor = db.rawQuery("select max(id) from History", null)
         cursor.moveToFirst()
         val id = cursor.getInt(0) + 1
         val insert = ContentValues()
@@ -116,7 +113,6 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
 
     fun getHistory(trackingNumber: String?): ArrayList<String> {
         var cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, null)
-
         if(cursor.count == 0)
         {
             val trueTrackingNumber = getTrackingNumber(trackingNumber)
@@ -209,7 +205,6 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     private fun convertFromMilitaryTime(time: String) : String
     {
         var conversion = ""
-
         if(time.isNotBlank() && (!time.contains("am") || !time.contains("pm")))
         {
             var shift = 0
@@ -223,14 +218,12 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
             if(shift == 0) conversion += " am"
             else conversion += " pm"
         }
-
         return conversion
     }
 
     private fun convertToMilitaryTime(time: String?) : String
     {
         var conversion = ""
-
         if(!time.isNullOrBlank() && (time.contains("am") || time.contains("pm")))
         {
             var shift = 0
@@ -239,7 +232,6 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
             val hours = Integer.parseInt(split[0]) + shift
             conversion = hours.toString() + split[1].substring(0, 2)
         }
-
         return conversion
     }
 
