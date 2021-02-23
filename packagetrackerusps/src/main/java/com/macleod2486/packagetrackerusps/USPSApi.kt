@@ -35,7 +35,7 @@ import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 
 class USPSApi(private val userID: String, private val context: Context?) {
-    private val databaseVersion = 2
+    private val databaseVersion = 3
     private val crashlytics: FirebaseCrashlytics
     private var APIUrl: String? = null
     var trackingNumber: String? = null
