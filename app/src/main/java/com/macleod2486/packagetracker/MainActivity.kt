@@ -27,6 +27,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -36,6 +37,8 @@ import com.macleod2486.packagetracker.tools.TrackingUpdater
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
+    lateinit var navHost: NavHostFragment
+    lateinit var navController: NavController
     var manager: FragmentManager? = null
     var trackingNumber: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         manager = supportFragmentManager
         supportActionBar!!.setTitle(R.string.app_name)
-        PackageTrackerApplication.navHost = manager!!.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        PackageTrackerApplication.navController = PackageTrackerApplication.navHost.navController
+        navHost = manager!!.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHost.navController
     }
 
     public override fun onStart() {
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         {
             val bundle = Bundle()
             bundle.putString("trackingnumber", trackingNumber)
-            PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail, bundle)
+            navController.navigate(R.id.action_main2_to_USPSDetail, bundle)
             trackingNumber = null
         }
     }
@@ -90,13 +93,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val stackPopped = PackageTrackerApplication.navController.popBackStack()
+        val stackPopped = navController.popBackStack()
         if(!stackPopped)
             super.onBackPressed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (PackageTrackerApplication.navController.currentDestination!!.id != R.id.settings) PackageTrackerApplication.navController.navigate(R.id.action_main2_to_settings)
+        if (navController.currentDestination!!.id != R.id.settings) navController.navigate(R.id.action_main2_to_settings)
         return true
     }
 }

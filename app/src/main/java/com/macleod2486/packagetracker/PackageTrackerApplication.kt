@@ -22,13 +22,9 @@
 package com.macleod2486.packagetracker
 
 import android.app.Application
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 
 class PackageTrackerApplication : Application (){
     companion object {
-        lateinit var navHost: NavHostFragment
-        lateinit var navController: NavController
         const val databaseVersion = 3
     }
 }

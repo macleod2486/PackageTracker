@@ -32,6 +32,7 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.macleod2486.packagetracker.PackageTrackerApplication
 import com.macleod2486.packagetracker.R
 import com.macleod2486.packagetrackerusps.USPSManager
@@ -41,11 +42,11 @@ class Main : Fragment() {
     lateinit var main: View
     lateinit var entries: ArrayList<String>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val tempManager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
         main = inflater.inflate(R.layout.content_main, container, false)
         val add = main.findViewById<Button>(R.id.add)
-        add.setOnClickListener { PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPS2) }
+        add.setOnClickListener { Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPS2) }
         val manager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
         entries = manager.entries
         manager.close()
@@ -57,7 +58,7 @@ class Main : Fragment() {
             if (!entries.contains("No current entries")) {
                 val bundle = Bundle()
                 bundle.putString("trackingnumber", entries.get(position))
-                PackageTrackerApplication.navController.navigate(R.id.action_main2_to_USPSDetail, bundle)
+                Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPSDetail, bundle)
             }
         }
         entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->

@@ -21,9 +21,8 @@
  */
 package com.macleod2486.packagetracker.fragments
 
-import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,10 +33,10 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import com.macleod2486.packagetracker.PackageTrackerApplication
+import androidx.navigation.Navigation
 import com.macleod2486.packagetracker.R
 import com.macleod2486.packagetrackerusps.USPSApi
+import kotlinx.coroutines.*
 
 class USPS : Fragment()
 {
@@ -51,7 +50,7 @@ class USPS : Fragment()
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
         toolbar.title = "Add tracking numbers"
         toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
-        toolbar.setNavigationOnClickListener { PackageTrackerApplication.navController.popBackStack() }
+        toolbar.setNavigationOnClickListener { Navigation.findNavController(requireView()).popBackStack() }
         val text = uspsView.findViewById<EditText>(R.id.trackingEntry)
 
         addUSPSTracking = uspsView.findViewById(R.id.addUSPS)
@@ -59,12 +58,17 @@ class USPS : Fragment()
             trackingIDs = text.text.toString().replace("\\s".toRegex(), "")
             if(trackingIDs.isNotBlank() && trackingIDs.isNotEmpty())
             {
-                val initalize = InitalizeEntry()
-                initalize.setActivity(requireActivity())
-                initalize.setContext(requireContext())
-                initalize.setProgressBar(progress)
-                initalize.setTrackingId(trackingIDs)
-                initalize.execute()
+                runBlocking {
+
+                    progress.visibility = View.VISIBLE
+
+                    val initalize = async(context = Dispatchers.IO){ initalizeEntry() }
+
+                    initalize.await().run {
+                        progress.visibility = View.INVISIBLE
+                        Navigation.findNavController(requireView()).popBackStack()
+                    }
+                }
             }
             else
             {
@@ -74,57 +78,27 @@ class USPS : Fragment()
 
         progress = uspsView.findViewById(R.id.uspsAddProgress)
         progress.visibility = View.INVISIBLE
+
         return uspsView
     }
 
-    companion object {
-
-        private class InitalizeEntry : AsyncTask<Void?, Void?, Void?>() {
-
-            private lateinit var activity : FragmentActivity
-            private lateinit var progress : ProgressBar
-            private lateinit var context : Context
-            private lateinit var trackingIDs : String
-
-            fun setActivity(act: FragmentActivity)
+    private fun initalizeEntry()
+    {
+        val userId = requireActivity().resources.getString(R.string.USPSApiUserID)
+        val apiTool = USPSApi(userId, context)
+        val ids = trackingIDs.split(",").toTypedArray()
+        for (id in ids) {
+            Log.i("USPS", "Is null ${apiTool == null}")
+            Log.i("USPS", "Is null ${id}")
+            val result = apiTool.getTrackingInfo(id)
+            if(result != null)
             {
-                activity = act
-            }
-
-            fun setProgressBar(prog: ProgressBar)
-            {
-                progress = prog
-            }
-
-            fun setContext(con: Context)
-            {
-                context = con
-            }
-
-            fun setTrackingId(ids: String)
-            {
-                trackingIDs = ids
-            }
-
-            override fun doInBackground(vararg params: Void?): Void? {
-                activity.runOnUiThread { progress.visibility = View.VISIBLE }
-                val userId = activity.resources.getString(R.string.USPSApiUserID)
-                val apiTool = USPSApi(userId, context)
-                val ids = trackingIDs.split(",").toTypedArray()
-                for (id in ids) {
-                    val result = apiTool.getTrackingInfo(id)
-                    apiTool.trackingNumber = id
-                    apiTool.storeInitial(result)
-                    apiTool.initialHistory(id, activity)
-                }
-                apiTool.closeDatabase()
-                return null
-            }
-
-            override fun onPostExecute(result: Void?) {
-                activity.runOnUiThread { progress.visibility = View.INVISIBLE }
-                PackageTrackerApplication.navController.popBackStack()
+                apiTool.trackingNumber = id
+                apiTool.storeInitial(result)
+                apiTool.initialHistory(id, requireActivity())
             }
         }
+        apiTool.closeDatabase()
+
     }
 }
