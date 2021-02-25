@@ -66,7 +66,7 @@ class USPSApi(private val userID: String, private val context: Context?) {
             doc = builder.parse(connection.inputStream)
             connection.disconnect()
         } catch (e: Exception) {
-            Log.i("USPSAPIError", e.message!!)
+            Log.i("USPSAPIError", e.toString())
             crashlytics.recordException(e)
         }
         return doc
