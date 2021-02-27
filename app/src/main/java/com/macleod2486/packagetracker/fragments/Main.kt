@@ -81,6 +81,7 @@ class Main : Fragment() {
                 alertBuilder.setNeutralButton("Edit") { _: DialogInterface?, _: Int ->
                     val inputView = EditText(context)
                     inputView.inputType = InputType.TYPE_CLASS_TEXT
+                    inputView.setText(entries[position])
 
                     val editAlertBuilder = AlertDialog.Builder(activity)
                     editAlertBuilder.setView(inputView)
