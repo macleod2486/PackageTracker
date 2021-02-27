@@ -91,6 +91,7 @@ class Main : Fragment() {
                             tempManager.setNick(nick = inputView.text.toString(), trackingNumber = entries[position])
                             val textItem = adapterView!![position] as TextView
                             textItem.text = inputView.text.toString()
+                            entries[position] = inputView.text.toString()
                         }
                     }
                     editAlertBuilder.setNegativeButton("Cancel") {_: DialogInterface?, _: Int ->
