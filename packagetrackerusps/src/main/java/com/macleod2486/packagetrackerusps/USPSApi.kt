@@ -262,6 +262,11 @@ class USPSApi(private val userID: String, private val context: Context?) {
         }
     }
 
+    fun getNotificationTitle(trackingNumber: String): String
+    {
+        return manager.getNick(trackingNumber)
+    }
+
     fun getHistory(trackingNumber: String?): ArrayList<String> {
         return manager.getHistory(trackingNumber)
     }

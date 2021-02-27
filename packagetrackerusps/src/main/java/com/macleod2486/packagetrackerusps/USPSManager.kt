@@ -208,6 +208,28 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         {
             db.update("TrackingNumbers",  nickValue, "trackingnumber = ?", arrayOf(trackingNumber))
         }
+
+        cursor.close()
+    }
+
+    fun getNick(trackingNumber: String): String
+    {
+        lateinit var nick: String
+
+        val cursor = db.query("TrackingNumbers", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, null)
+
+        if(cursor.count > 0)
+        {
+            nick = cursor.getString(cursor.getColumnIndex("nick"))
+        }
+        else
+        {
+            nick = trackingNumber
+        }
+
+        cursor.close()
+
+        return nick
     }
 
     init {
