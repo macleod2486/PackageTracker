@@ -25,6 +25,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +59,7 @@ class Main : Fragment() {
             if (!entries.contains("No current entries")) {
                 val bundle = Bundle()
                 bundle.putString("trackingnumber", entries.get(position))
+                Log.i("USPS", "Main tracking number ${entries.get(position)}")
                 Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPSDetail, bundle)
             }
         }
@@ -84,7 +86,6 @@ class Main : Fragment() {
                     editAlertBuilder.setTitle("Nickname for tracking number")
                     editAlertBuilder.setPositiveButton("Ok") {_: DialogInterface?, _: Int ->
                         tempManager.addNick(nick = inputView.text.toString(), trackingNumber = entries[position])
-
                     }
                     editAlertBuilder.setNegativeButton("Cancel") {_: DialogInterface?, _: Int ->
 

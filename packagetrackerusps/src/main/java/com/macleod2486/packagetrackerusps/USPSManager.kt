@@ -116,7 +116,8 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         if(cursor.count == 0)
         {
             val trueTrackingNumber = getTrackingNumber(trackingNumber)
-            cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trueTrackingNumber), null, null, null)
+            if(trueTrackingNumber.isNotBlank())
+                cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trueTrackingNumber), null, null, null)
         }
         cursor.moveToFirst()
         val history = ArrayList<String>()
@@ -139,6 +140,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
 
     fun getHistoryForDisplay(trackingNumber: String?): ArrayList<String> {
         var cursor = db.query("History", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, "date DESC, time DESC")
+        Log.i("USPSManager", "Cursor size ${cursor.count}")
         if(cursor.count == 0)
         {
             val trueTrackingNumber = getTrackingNumber(trackingNumber)
@@ -239,8 +241,16 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
     {
         val number = db.query("TrackingNumbers", null, "nick = ?", arrayOf(nickname), null, null, null)
         number.moveToFirst()
-        val trackingNumber = number.getString(number.getColumnIndex("trackingnumber"))
-        number.close()
-        return trackingNumber
+        if(number.count > 0)
+        {
+            Log.i("USPSManager", "Number ${number.count}")
+            val trackingNumber = number.getString(number.getColumnIndex("trackingnumber"))
+            number.close()
+            return trackingNumber
+        }
+        else
+        {
+            return ""
+        }
     }
 }
