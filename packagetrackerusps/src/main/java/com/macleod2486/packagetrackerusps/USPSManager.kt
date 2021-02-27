@@ -192,11 +192,22 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
         return history
     }
 
-    fun addNick(trackingNumber: String, nick: String)
+    fun setNick(trackingNumber: String, nick: String)
     {
         val nickValue = ContentValues()
         nickValue.put("nick", nick)
-        db.update("TrackingNumbers",  nickValue, "trackingnumber = ?", arrayOf(trackingNumber))
+
+        val cursor = db.query("TrackingNumbers", null, "trackingnumber = ?", arrayOf(trackingNumber), null, null, null)
+
+        if(cursor.count == 0)
+        {
+            val trueTrackingNumber = getTrackingNumber(trackingNumber)
+            db.update("TrackingNumbers",  nickValue, "trackingnumber = ?", arrayOf(trueTrackingNumber))
+        }
+        else
+        {
+            db.update("TrackingNumbers",  nickValue, "trackingnumber = ?", arrayOf(trackingNumber))
+        }
     }
 
     init {

@@ -88,7 +88,7 @@ class Main : Fragment() {
                     editAlertBuilder.setPositiveButton("Ok") {_: DialogInterface?, _: Int ->
                         if(inputView.text.toString().isNotBlank())
                         {
-                            tempManager.addNick(nick = inputView.text.toString(), trackingNumber = entries[position])
+                            tempManager.setNick(nick = inputView.text.toString(), trackingNumber = entries[position])
                             val textItem = adapterView!![position] as TextView
                             textItem.text = inputView.text.toString()
                         }
