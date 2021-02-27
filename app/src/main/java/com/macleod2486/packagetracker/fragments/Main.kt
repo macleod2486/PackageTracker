@@ -32,6 +32,7 @@ import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.macleod2486.packagetracker.PackageTrackerApplication
@@ -63,7 +64,7 @@ class Main : Fragment() {
                 Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPSDetail, bundle)
             }
         }
-        entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
+        entryList.onItemLongClickListener = OnItemLongClickListener { adapterView: AdapterView<*>?, _: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val alertBuilder = AlertDialog.Builder(activity)
                 alertBuilder.setMessage("Delete ${entries.get(position)} ?")
@@ -85,7 +86,12 @@ class Main : Fragment() {
                     editAlertBuilder.setView(inputView)
                     editAlertBuilder.setTitle("Nickname for tracking number")
                     editAlertBuilder.setPositiveButton("Ok") {_: DialogInterface?, _: Int ->
-                        tempManager.addNick(nick = inputView.text.toString(), trackingNumber = entries[position])
+                        if(inputView.text.toString().isNotBlank())
+                        {
+                            tempManager.addNick(nick = inputView.text.toString(), trackingNumber = entries[position])
+                            val textItem = adapterView!![position] as TextView
+                            textItem.text = inputView.text.toString()
+                        }
                     }
                     editAlertBuilder.setNegativeButton("Cancel") {_: DialogInterface?, _: Int ->
 
