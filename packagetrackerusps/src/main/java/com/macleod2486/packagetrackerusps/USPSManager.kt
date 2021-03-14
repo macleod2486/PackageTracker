@@ -118,7 +118,7 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
                 do {
                     val trackingNumber = cursor.getString(cursor.getColumnIndex("trackingnumber"))
                     val nickName = cursor.getString(cursor.getColumnIndex("nick"))
-                    val entry = if(!nickName.isNullOrBlank()) nickName else trackingNumber
+                    val entry = if(!nickName.isNullOrBlank()) "$nickName\n$trackingNumber" else trackingNumber
                     entries.add(entry)
                 } while (cursor.moveToNext())
             }
