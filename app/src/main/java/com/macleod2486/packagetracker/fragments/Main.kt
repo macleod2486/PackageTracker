@@ -69,7 +69,8 @@ class Main : Fragment() {
         entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, view: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val alertBuilder = AlertDialog.Builder(activity)
-                alertBuilder.setMessage("Delete ${entriesForDisplay[position]} ?")
+                val nick = entriesForDisplay[position].split("\n")[0]
+                alertBuilder.setMessage("Delete $nick ?")
                 alertBuilder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
                     tempManager.deleteEntryAndHistory(entries[position])
                     val tempEntries = tempManager.entries
@@ -82,10 +83,10 @@ class Main : Fragment() {
                     entryList.adapter = tempAdapter
                     tempManager.close()
                 }
-                alertBuilder.setNeutralButton("Edit") { _: DialogInterface?, _: Int ->
+                alertBuilder.setNeutralButton("Edit Nick") { _: DialogInterface?, _: Int ->
                     val inputView = EditText(context)
                     inputView.inputType = InputType.TYPE_CLASS_TEXT
-                    inputView.setText(entries[position])
+                    inputView.setText(nick)
 
                     val editAlertBuilder = AlertDialog.Builder(activity)
                     editAlertBuilder.setView(inputView)
@@ -95,8 +96,8 @@ class Main : Fragment() {
                         {
                             tempManager.setNick(nick = inputView.text.toString(), trackingNumber = entries[position])
                             val textItem = view as TextView
-                            textItem.text = inputView.text.toString()
-                            entriesForDisplay[position] = inputView.text.toString()
+                            entriesForDisplay[position] = "${inputView.text}\n${entries[position]}"
+                            textItem.text = entriesForDisplay[position]
                         }
                     }
                     editAlertBuilder.setNegativeButton("Cancel") {_: DialogInterface?, _: Int ->

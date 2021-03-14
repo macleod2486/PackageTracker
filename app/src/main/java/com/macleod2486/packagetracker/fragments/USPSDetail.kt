@@ -45,11 +45,16 @@ class USPSDetail : Fragment() {
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
             val title = trackingNumber!!.split("\n")
             toolbar.title = title[0]
-            if(title.size > 1) toolbar.subtitle = title[1]
+            var track = toolbar.title as String?
+            if(title.size > 1)
+            {
+                toolbar.subtitle = title[1]
+                track = title[1]
+            }
             toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
             toolbar.setNavigationOnClickListener { Navigation.findNavController(requireView()).popBackStack() }
             val manager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
-            val historyList = manager.getHistoryForDisplay(trackingNumber)
+            val historyList = manager.getHistoryForDisplay(track)
             manager.close()
             val arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, historyList)
             val statusList = uspsDetailView.findViewById<ListView>(R.id.history)
