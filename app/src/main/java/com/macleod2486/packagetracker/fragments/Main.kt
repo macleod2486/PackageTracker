@@ -64,7 +64,7 @@ class Main : Fragment() {
                 Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPSDetail, bundle)
             }
         }
-        entryList.onItemLongClickListener = OnItemLongClickListener { adapterView: AdapterView<*>?, _: View?, position: Int, _: Long ->
+        entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, view: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val alertBuilder = AlertDialog.Builder(activity)
                 alertBuilder.setMessage("Delete ${entries.get(position)} ?")
@@ -90,7 +90,7 @@ class Main : Fragment() {
                         if(inputView.text.toString().isNotBlank())
                         {
                             tempManager.setNick(nick = inputView.text.toString(), trackingNumber = entries[position])
-                            val textItem = adapterView!![position] as TextView
+                            val textItem = view as TextView
                             textItem.text = inputView.text.toString()
                             entries[position] = inputView.text.toString()
                         }
