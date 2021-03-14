@@ -43,6 +43,7 @@ import java.util.*
 class Main : Fragment() {
     lateinit var main: View
     lateinit var entries: ArrayList<String>
+    lateinit var entriesForDisplay: ArrayList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val tempManager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
@@ -51,30 +52,33 @@ class Main : Fragment() {
         add.setOnClickListener { Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPS2) }
         val manager = USPSManager(context, "USPS", null, PackageTrackerApplication.databaseVersion)
         entries = manager.entries
+        entriesForDisplay = manager.entriesForDisplay
         manager.close()
         if (entries.size == 0) entries.add("No current entries")
         val entryList = main.findViewById<ListView>(R.id.entries)
-        val arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, entries)
+        val arrayAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, entriesForDisplay)
         entryList.adapter = arrayAdapter
         entryList.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val bundle = Bundle()
-                bundle.putString("trackingnumber", entries.get(position))
-                Log.i("USPS", "Main tracking number ${entries.get(position)}")
+                bundle.putString("trackingnumber", entriesForDisplay[position])
+                Log.i("USPS", "Main tracking number ${entries[position]}")
                 Navigation.findNavController(requireView()).navigate(R.id.action_main2_to_USPSDetail, bundle)
             }
         }
         entryList.onItemLongClickListener = OnItemLongClickListener { _: AdapterView<*>?, view: View?, position: Int, _: Long ->
             if (!entries.contains("No current entries")) {
                 val alertBuilder = AlertDialog.Builder(activity)
-                alertBuilder.setMessage("Delete ${entries.get(position)} ?")
+                alertBuilder.setMessage("Delete ${entriesForDisplay[position]} ?")
                 alertBuilder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
                     tempManager.deleteEntryAndHistory(entries[position])
                     val tempEntries = tempManager.entries
+                    val tempEntriesForDisplay = tempManager.entriesForDisplay
                     if (tempEntries.size == 0) tempEntries.add("No current entries")
                     entries = tempEntries
+                    entriesForDisplay = tempEntriesForDisplay
                     tempManager.close()
-                    val tempAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, tempEntries)
+                    val tempAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, tempEntriesForDisplay)
                     entryList.adapter = tempAdapter
                     tempManager.close()
                 }
@@ -92,7 +96,7 @@ class Main : Fragment() {
                             tempManager.setNick(nick = inputView.text.toString(), trackingNumber = entries[position])
                             val textItem = view as TextView
                             textItem.text = inputView.text.toString()
-                            entries[position] = inputView.text.toString()
+                            entriesForDisplay[position] = inputView.text.toString()
                         }
                     }
                     editAlertBuilder.setNegativeButton("Cancel") {_: DialogInterface?, _: Int ->

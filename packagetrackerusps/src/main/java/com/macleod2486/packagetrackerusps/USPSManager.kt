@@ -102,6 +102,21 @@ class USPSManager(context: Context?, name: String?, factory: CursorFactory?, ver
             if (cursor.count > 0) {
                 do {
                     val trackingNumber = cursor.getString(cursor.getColumnIndex("trackingnumber"))
+                    entries.add(trackingNumber)
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+            return entries
+        }
+
+    val entriesForDisplay: ArrayList<String>
+        get() {
+            val entries = ArrayList<String>()
+            val cursor = db.query("TrackingNumbers", null, null, null, null, null, null)
+            cursor.moveToFirst()
+            if (cursor.count > 0) {
+                do {
+                    val trackingNumber = cursor.getString(cursor.getColumnIndex("trackingnumber"))
                     val nickName = cursor.getString(cursor.getColumnIndex("nick"))
                     val entry = if(!nickName.isNullOrBlank()) nickName else trackingNumber
                     entries.add(entry)
